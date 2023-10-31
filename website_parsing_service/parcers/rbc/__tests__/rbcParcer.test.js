@@ -24,7 +24,7 @@ describe('RBCParcer', () => {
         });
 
         it('should parse news correctly for the set of data', async () => {
-            const result = await parser.makeParceToDateTime(LAST_UPDATED_DATE);
+            const result = await parser.makeParceUntilPublicationDateTime(LAST_UPDATED_DATE);
             expect(result).toEqual(expectedResult);
         });
     });

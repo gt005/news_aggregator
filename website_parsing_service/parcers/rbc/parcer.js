@@ -9,7 +9,7 @@ export class RBCParcer {
         this.allArticlesHaveBeenParced = false;
     }
 
-    async makeParceToDateTime(lastUpdatedDateTime) {
+    async makeParceUntilPublicationDateTime(lastUpdatedDateTime) {
         /*
         Парсит новости с сайта РБК.
 
