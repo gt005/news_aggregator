@@ -4,12 +4,17 @@ import { convertRBCDatetimeToISO } from './services/dateConverter';
 
 
 export class RBCParcer {
+    constructor() {
+        this.articles = [];
+        this.allArticlesHaveBeenParced = false;
+    }
+
     async makeParceToDateTime(lastUpdatedDateTime) {
         /*
         Парсит новости с сайта РБК.
 
         Args:
-            lastParcedArticleLink (str): ссылка на последнюю спаршенную новость
+            lastUpdatedDateTime (str): дата и время последнего обновления новостей в ISO формате
 
         Returns:
             массив объектов новостей
@@ -17,40 +22,48 @@ export class RBCParcer {
         const news_by_request = 10;
         const max_news_amount = 500;  // максимальное количество новостей, доступных для параметра offset, а значит и для парсинга
 
-        let allArticlesHaveBeenParced = false;
-        const articles = [];
-
         for (let i = 0; i < Math.ceil(max_news_amount / news_by_request); i += news_by_request) {
             const response = await axios.get(`https://quote.rbc.ru/v5/ajax/get-news-on-main/?limit=${news_by_request}&offset=${i}`);
 
-            const parceFunction = cheerio.load(response.data.html);
+            this._parseHtml(response.data.html, lastUpdatedDateTime);
 
-            parceFunction('.q-item').each((idx, elem) => {
-                const dateTime = this._getDateTimeFromHtmlBlock(elem, parceFunction);
-
-                if (new Date(dateTime) <= new Date(lastUpdatedDateTime)) {
-                    allArticlesHaveBeenParced = true;
-                    return false;
-                }
-
-                const title = this._getTitleFromHtmlBlock(elem, parceFunction);
-                const description = this._getDescriptionFromHtmlBlock(elem, parceFunction);
-                const link = this._getLinkFromHtmlBlock(elem, parceFunction);
-
-                articles.push({
-                    title: title,
-                    description: description,
-                    dateTime: dateTime,
-                    link: link
-                })
-            })
-
-            if (allArticlesHaveBeenParced) {
+            if (this.allArticlesHaveBeenParced) {
                 break;
             }
         }
 
-        return articles;
+        return this.articles;
+    }
+
+    _parseHtml(html, lastUpdatedDateTime) {
+        /*
+        Парсит html страницы с новостями.
+
+        Args:
+            html (str): html страницы с новостями
+            lastUpdatedDateTime (str): дата и время последнего обновления новостей в ISO формате
+        */
+        const parceFunction = cheerio.load(html);
+
+        parceFunction('.q-item').each((idx, elem) => {
+            const dateTime = this._getDateTimeFromHtmlBlock(elem, parceFunction);
+
+            if (new Date(dateTime) <= new Date(lastUpdatedDateTime)) {
+                this.allArticlesHaveBeenParced = true;
+                return false;
+            }
+
+            const title = this._getTitleFromHtmlBlock(elem, parceFunction);
+            const description = this._getDescriptionFromHtmlBlock(elem, parceFunction);
+            const link = this._getLinkFromHtmlBlock(elem, parceFunction);
+
+            this.articles.push({
+                title: title,
+                description: description,
+                dateTime: dateTime,
+                link: link
+            });
+        });
     }
 
     _getDateTimeFromHtmlBlock(cheerioBlock, parceFunction) {

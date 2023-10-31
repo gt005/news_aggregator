@@ -1,4 +1,3 @@
-// RBCParcer.test.js
 import cheerio from 'cheerio';
 import axios from 'axios';
 import { DateTime } from 'luxon';
@@ -14,7 +13,7 @@ const LAST_UPDATED_DATE = DateTime.local(2023, 10, 31, 15, 35).toISO();
 describe('RBCParcer', () => {
     let parser;
 
-    beforeAll(() => {
+    beforeEach(() => {
         parser = new RBCParcer();
     });
 
@@ -108,4 +107,41 @@ describe('RBCParcer', () => {
         });
     });
 
+    describe('_parseHtml', () => {
+        it('should parse the provided HTML correctly', () => {
+            const mockHtml = `
+                <div class="q-item">
+                    <span class="q-item__date__text">27 дек, 15:06</span>
+                    <span class="q-item__title">Test Title</span>
+                    <span class="q-item__description">Test Description</span>
+                    <a class="q-item__link" href="https://example.com/test"></a>
+                </div>
+            `;
+    
+            parser._parseHtml(mockHtml, LAST_UPDATED_DATE);
+    
+            const expectedArticle = {
+                dateTime: '2023-12-27T15:06:00.000+03:00',
+                title: 'Test Title',
+                description: 'Test Description',
+                link: 'https://example.com/test'
+            };
+            expect(parser.articles).toEqual([expectedArticle]);
+        });
+    
+        it('should stop parsing if an article is older than the last update date', () => {
+            const mockHtml = `
+                <div class="q-item">
+                    <span class="q-item__date__text">30 окт, 15:06</span>
+                    <span class="q-item__title">Old Article</span>
+                    <span class="q-item__description">Old Description</span>
+                    <a class="q-item__link" href="https://example.com/old"></a>
+                </div>
+            `;
+    
+            parser._parseHtml(mockHtml, LAST_UPDATED_DATE);
+            expect(parser.allArticlesHaveBeenParced).toBe(true);
+            expect(parser.articles).toEqual([]);
+        });
+    });
 });
