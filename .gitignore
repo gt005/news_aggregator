@@ -12,6 +12,7 @@ __pycache__/
 *.egg-info/
 dist/
 build/
+venv/
 *.egg-info/
 *.egg
 *.pyc
@@ -42,3 +43,4 @@ build/
 .DS_Store
 Thumbs.db
 .env
+sandbox/
