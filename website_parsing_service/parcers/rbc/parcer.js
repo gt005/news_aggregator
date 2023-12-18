@@ -17,7 +17,7 @@ export class RBCParcer {
             lastUpdatedDateTime (str): дата и время последнего обновления новостей в ISO формате
 
         Returns:
-            массив объектов новостей
+            Массив объектов новостей до установленного времени
         */
         const news_by_request = 10;
         const max_news_amount = 500;  // максимальное количество новостей, доступных для параметра offset, а значит и для парсинга
@@ -25,7 +25,7 @@ export class RBCParcer {
         for (let i = 0; i < Math.ceil(max_news_amount / news_by_request); i += news_by_request) {
             const response = await axios.get(`https://quote.rbc.ru/v5/ajax/get-news-on-main/?limit=${news_by_request}&offset=${i}`);
 
-            this._parseHtml(response.data.html, lastUpdatedDateTime);
+            this._extractNewsFromHtml(response.data.html, lastUpdatedDateTime);
 
             if (this.allArticlesHaveBeenParced) {
                 break;
@@ -35,7 +35,7 @@ export class RBCParcer {
         return this.articles;
     }
 
-    _parseHtml(html, lastUpdatedDateTime) {
+    _extractNewsFromHtml(html, lastUpdatedDateTime) {
         /*
         Парсит html страницы с новостями.
 
@@ -50,7 +50,7 @@ export class RBCParcer {
 
             if (new Date(dateTime) <= new Date(lastUpdatedDateTime)) {
                 this.allArticlesHaveBeenParced = true;
-                return false;
+                return;
             }
 
             const title = this._getTitleFromHtmlBlock(elem, parceFunction);

@@ -4,7 +4,7 @@ import { DateTime } from 'luxon';
 import { RBCParcer } from '../parcer';
 import testData from './testData/rbcParcerTestData.json';
 import expectedResult from './testData/rbcParcerTestDataRightResult.json';
-
+import * as dateConverterServices from '../services/dateConverter';
 
 jest.mock('axios');
 
@@ -30,11 +30,21 @@ describe('RBCParcer', () => {
     });
 
     describe('_getDateTimeFromHtmlBlock', () => {
-        it('should extract datetime correctly', () => {
-            const mockHtml = `<div class="q-item"><span class="q-item__date__text">27 окт, 15:06</span></div>`;
+        it(`should extract datetime correctly`, () => {
+            const testDate = '27 окт, 15:06';
+
+            const spyConvertRBCDatetimeToISO = jest.spyOn(dateConverterServices, 'convertRBCDatetimeToISO');
+
+            const mockHtml = `<div class="q-item"><span class="q-item__date__text">${testDate}</span></div>`;
+
             const $ = cheerio.load(mockHtml);
             const result = parser._getDateTimeFromHtmlBlock($('.q-item'), $);
+
             expect(result).toEqual('2023-10-27T15:06:00.000+03:00');
+
+            expect(spyConvertRBCDatetimeToISO).toHaveBeenCalledWith(testDate);
+
+            spyConvertRBCDatetimeToISO.mockRestore();
         });
 
         const wrongDateCases = [
@@ -107,7 +117,7 @@ describe('RBCParcer', () => {
         });
     });
 
-    describe('_parseHtml', () => {
+    describe('_extractNewsFromHtml', () => {
         it('should parse the provided HTML correctly', () => {
             const mockHtml = `
                 <div class="q-item">
@@ -117,9 +127,9 @@ describe('RBCParcer', () => {
                     <a class="q-item__link" href="https://example.com/test"></a>
                 </div>
             `;
-    
-            parser._parseHtml(mockHtml, LAST_UPDATED_DATE);
-    
+
+            parser._extractNewsFromHtml(mockHtml, LAST_UPDATED_DATE);
+
             const expectedArticle = {
                 dateTime: '2023-12-27T15:06:00.000+03:00',
                 title: 'Test Title',
@@ -128,7 +138,7 @@ describe('RBCParcer', () => {
             };
             expect(parser.articles).toEqual([expectedArticle]);
         });
-    
+
         it('should stop parsing if an article is older than the last update date', () => {
             const mockHtml = `
                 <div class="q-item">
@@ -138,8 +148,8 @@ describe('RBCParcer', () => {
                     <a class="q-item__link" href="https://example.com/old"></a>
                 </div>
             `;
-    
-            parser._parseHtml(mockHtml, LAST_UPDATED_DATE);
+
+            parser._extractNewsFromHtml(mockHtml, LAST_UPDATED_DATE);
             expect(parser.allArticlesHaveBeenParced).toBe(true);
             expect(parser.articles).toEqual([]);
         });
