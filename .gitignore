@@ -59,4 +59,4 @@ lerna-debug.log*
 *.njsproj
 *.sln
 *.sw?
-todo
+todo.md
