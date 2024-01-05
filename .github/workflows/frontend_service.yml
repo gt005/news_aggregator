@@ -2,26 +2,27 @@ name: Frontend React Service CI
 
 on:
   push:
-    paths:
-      - 'frontend_service/**'
+    branches: [ main ]
+
   pull_request:
-    paths:
-      - 'frontend_service/**'
+    branches: [ main ]
 
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
+  
+    defaults:
+      run:
+        working-directory: ./frontend_service
 
     steps:
     - uses: actions/checkout@v2
-
-    - name: Set up Node.js
-      uses: actions/setup-node@v2
+    - uses: actions/setup-node@v2
       with:
-        node-version: '18.12.1'
+        node-version: 18
 
     - name: Install dependencies (React Service)
-      run: cd frontend_service && yarn install
+      run: yarn install
 
     - name: Run tests (React Service)
-      run: cd frontend_service && yarn test
+      run: yarn test

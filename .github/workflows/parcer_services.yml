@@ -2,26 +2,27 @@ name: Parcer Services CI
 
 on:
   push:
-    paths:
-      - 'website_parsing_service/**'
+    branches: [ main ]
+
   pull_request:
-    paths:
-      - 'website_parsing_service/**'
+    branches: [ main ]
 
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
 
+    defaults:
+      run:
+        working-directory: ./website_parsing_service
+
     steps:
     - uses: actions/checkout@v2
-
-    - name: Set up Node.js
-      uses: actions/setup-node@v2
+    - uses: actions/setup-node@v2
       with:
-        node-version: '18.12.1'
+        node-version: 18
 
-    - name: Install dependencies (JavaScript Service)
-      run: cd website_parsing_service && yarn install
+    - name: Install dependencies (Parcer Services)
+      run: yarn install
 
-    - name: Run tests (JavaScript Service)
-      run: cd website_parsing_service && yarn test
+    - name: Run tests (Parcer Services)
+      run: yarn test
