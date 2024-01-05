@@ -1,24 +1,10 @@
 import { convertRBCDatetimeToISO } from '../dateConverter';
-import { DateTime } from 'luxon';
+import { DATE_STRING_TO_ISO_TESTS } from '../test_utils/const';
+
 
 describe('test convertRBCDatetimeToISO', () => {
-    it('should convert RBC datetime string with date to ISO format', () => {
-        const rbcDatetimeString = '27 окт, 15:06';
-        const expectedISOString = DateTime.local(new Date().getFullYear(), 10, 27, 15, 6).toUTC().toISO();
-        
-        let result = convertRBCDatetimeToISO(rbcDatetimeString);
-        result = DateTime.fromISO(result).toUTC().toISO();
-        expect(result).toEqual(expectedISOString);
-    });
-
-    it('should convert RBC datetime string without date to ISO format', () => {
-        const rbcDatetimeString = '15:06';
-    
-        const now = DateTime.local();
-        const expectedISOString = DateTime.local(now.year, now.month, now.day, 15, 6).toUTC().toISO();
-    
-        let result = convertRBCDatetimeToISO(rbcDatetimeString);
-        result = DateTime.fromISO(result).toUTC().toISO();
+    it.each(DATE_STRING_TO_ISO_TESTS)('should convert RBC datetime string "%s" to ISO format', (input, expectedISOString) => {
+        const result = convertRBCDatetimeToISO(input);
         expect(result).toEqual(expectedISOString);
     });
 

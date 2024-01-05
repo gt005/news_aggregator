@@ -15,7 +15,7 @@
     "@": "./utils"
   },
   "scripts": {
-    "test": "jest --watchAll"
+    "test": "jest"
   },
   "devDependencies": {
     "@babel/core": "^7.23.2",

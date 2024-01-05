@@ -2,6 +2,7 @@
 node_modules/
 npm-debug.log
 yarn-error.log
+coverage/
 
 # Python
 __pycache__/

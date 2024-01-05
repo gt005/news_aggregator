@@ -5,10 +5,14 @@ import { RBCParcer } from '../parcer';
 import testData from './testData/rbcParcerTestData.json';
 import expectedResult from './testData/rbcParcerTestDataRightResult.json';
 import * as dateConverterServices from '../services/dateConverter';
+import { convertRBCDatetimeToISO } from '../services/dateConverter';
+import { timeZone } from '../../const';
+
 
 jest.mock('axios');
 
-const LAST_UPDATED_DATE = DateTime.local(2023, 10, 31, 15, 35).toISO();
+const LAST_UPDATED_DATE = DateTime.fromObject({ year: 2023, month: 10, day: 31, hour: 15, minute: 35}, { zone: timeZone }).toISO()
+
 
 describe('RBCParcer', () => {
     let parser;
@@ -40,7 +44,7 @@ describe('RBCParcer', () => {
             const $ = cheerio.load(mockHtml);
             const result = parser._getDateTimeFromHtmlBlock($('.q-item'), $);
 
-            expect(result).toEqual('2023-10-27T15:06:00.000+03:00');
+            expect(result).toEqual(convertRBCDatetimeToISO(testDate));
 
             expect(spyConvertRBCDatetimeToISO).toHaveBeenCalledWith(testDate);
 
@@ -119,9 +123,10 @@ describe('RBCParcer', () => {
 
     describe('_extractNewsFromHtml', () => {
         it('should parse the provided HTML correctly', () => {
+            const testDateTime = '27 дек, 15:06';
             const mockHtml = `
                 <div class="q-item">
-                    <span class="q-item__date__text">27 дек, 15:06</span>
+                    <span class="q-item__date__text">${testDateTime}</span>
                     <span class="q-item__title">Test Title</span>
                     <span class="q-item__description">Test Description</span>
                     <a class="q-item__link" href="https://example.com/test"></a>
@@ -131,7 +136,7 @@ describe('RBCParcer', () => {
             parser._extractNewsFromHtml(mockHtml, LAST_UPDATED_DATE);
 
             const expectedArticle = {
-                dateTime: '2023-12-27T15:06:00.000+03:00',
+                dateTime: convertRBCDatetimeToISO(testDateTime),
                 title: 'Test Title',
                 description: 'Test Description',
                 link: 'https://example.com/test'
@@ -142,7 +147,7 @@ describe('RBCParcer', () => {
         it('should stop parsing if an article is older than the last update date', () => {
             const mockHtml = `
                 <div class="q-item">
-                    <span class="q-item__date__text">30 окт, 15:06</span>
+                    <span class="q-item__date__text">30 окт 2023, 15:06</span>
                     <span class="q-item__title">Old Article</span>
                     <span class="q-item__description">Old Description</span>
                     <a class="q-item__link" href="https://example.com/old"></a>
