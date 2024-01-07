@@ -6,3 +6,8 @@ export interface INews {
     link: string,
     dateTime: Date
 }
+
+export enum NewsActionType {
+    ADD = 'add',
+    REMOVE = 'remove',
+}

@@ -2,13 +2,24 @@ import React, { ReactElement, FC } from 'react';
 import { INews } from '@/shared/types';
 import { getFormattedTime, getFormattedDate } from '@/shared/lib/time-utils';
 import styles from './NewsCard.module.sass';
+import { Skeleton } from 'antd';
+
 
 interface NewsCardProps {
-    news: INews;
-    ActionButton?: React.ComponentType<{ news: INews }>
+    news: INews | null; // news может быть null, если данные еще загружаются
+    ActionButton: React.ComponentType<{ news: INews }> | null;
+    isLoading: boolean;
 }
 
-export const NewsCard: FC<NewsCardProps> = ({ news, ActionButton }) => {
+export const NewsCard: FC<NewsCardProps> = ({ news, ActionButton, isLoading }) => {
+    if (isLoading) {
+        return (
+            <div className={styles['news-card']}>
+                <Skeleton active />
+            </div>
+        );
+    }
+
     return (
         <div className={styles['news-card']}>
             <div className={styles['news-card__container']}>
