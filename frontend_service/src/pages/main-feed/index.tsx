@@ -33,16 +33,24 @@ const newsArray: INews[] = [
 
 
 const FeedPage = () => {
-    const [ isLoading, setIsLoading ] = useState(true);
-
-    setTimeout(() => {
-        setIsLoading(false);
-    }, 4000);
+    const tmp = (page: number): Promise<INews[]> => {
+        console.log(page)
+        return new Promise((resolve, rejest) => {
+            setTimeout(() => {
+                const returnArray: INews[] = newsArray.map(news => ({
+                    ...news,
+                    title: `From ${page} set and id=${news.id * page}`,
+                    id: news.id * page
+                }));
+                resolve(returnArray);
+            }, 1000);
+        })
+    }
 
     return (
         <>
             <Title title="Новости" />
-            <Feed newsActionType={NewsActionType.ADD} newsList={newsArray} isLoading={isLoading} />
+            <Feed newsActionType={NewsActionType.ADD} fetchNews={tmp} />
         </>
     );
 }

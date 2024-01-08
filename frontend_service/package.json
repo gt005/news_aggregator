@@ -18,11 +18,13 @@
     "@fortawesome/free-regular-svg-icons": "^6.5.1",
     "@fortawesome/free-solid-svg-icons": "^6.5.1",
     "@fortawesome/react-fontawesome": "^0.2.0",
+    "@tanstack/react-query": "^5.17.9",
     "antd": "^5.12.4",
     "axios": "^1.6.5",
     "dayjs": "^1.11.10",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "react-intersection-observer": "^9.5.3"
   },
   "devDependencies": {
     "@types/antd": "^1.0.0",
