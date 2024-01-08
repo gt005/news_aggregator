@@ -1,1 +1,1 @@
-export { AddToFolderButton } from './ui/AddToFolderButton'
+export { AddToFolderCornerButton as AddToFolderButton } from './ui/AddToFolderButton'

@@ -1,0 +1,27 @@
+.container
+    --icon-size: 22px
+
+    background: #222F38
+    height: 150px
+    width: 150px
+    position: absolute
+    top: 0
+    right: 0
+    border: 1px solid #222F38
+    border-radius: 100%
+    transform: translate(50%,-50%)
+    cursor: pointer
+    transition: background 0.3s
+
+    .icon
+        color: white
+        position: absolute
+        font-size: var(--icon-size)
+        transform: translate(calc(-20px - var(--icon-size)), 22px)
+        transition: color 0.3s
+
+    &:hover
+        background: transparent
+
+        .icon
+            color: #222F38
