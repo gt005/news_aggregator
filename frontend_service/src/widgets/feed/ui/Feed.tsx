@@ -1,49 +1,34 @@
 import { useState, type FC, useRef } from 'react';
 
 import { NewsCard } from '@/entities/news'
-import { INews } from '@/shared/types';
+import { INews } from '@/shared/model/types';
 import styles from './Feed.module.sass';
 import { AddToFolderButton } from '@/features/news/add-to-folder-button';
 import { RemoveFromFolderButton } from '@/features/news/remove-from-folder-button';
 import { useEffect } from 'react';
 import { useInView } from 'react-intersection-observer';
-import { NewsActionType } from '@/shared/types';
-
+import { NewsActionType } from '@/shared/model/types';
+import { FetchNewsListResult } from '@/shared/model/types';
+import useNewsFeed from '../model/hooks';
 
 interface FeedProps {
     newsActionType: NewsActionType | null,
-    fetchNews: (page: number) => Promise<INews[]>;
+    fetchNews: (page: number) => Promise<FetchNewsListResult>;
 }
 
-
 export const Feed: FC<FeedProps> = ({ newsActionType, fetchNews }) => {
+    const { newsList, isInitialLoading, hasNextPage, loadNews } = useNewsFeed(fetchNews);
+    const { ref, inView } = useInView();
+
     const ActionButton = newsActionType === NewsActionType.ADD
         ? AddToFolderButton
         : newsActionType === NewsActionType.REMOVE
             ? RemoveFromFolderButton
             : null;
 
-    const { ref, inView } = useInView();
-    const [isInitialLoading, setIsInitialLoading] = useState(true);
-    const [newsList, setNewsList] = useState<INews[]>([]);
-    const [currentPage, setCurrentPage] = useState(1);
-
-    const loadNews = async (page: number) => {
-        const fetchedNews = await fetchNews(page);
-        setNewsList(prev => [...prev, ...fetchedNews]);
-        setCurrentPage(page + 1);
-        setIsInitialLoading(false);
-    };
-
     useEffect(() => {
-        loadNews(currentPage);
-    }, []);
-
-    useEffect(() => {
-        if (inView) {
-            loadNews(currentPage);
-        }
-    }, [inView])
+        if (inView) loadNews();
+    }, [inView]);
 
     return (
         <div className={styles.container}>
@@ -56,9 +41,10 @@ export const Feed: FC<FeedProps> = ({ newsActionType, fetchNews }) => {
                     {newsList.map(news => (
                         <NewsCard key={news.id} news={news} ActionButton={ActionButton} isLoading={isInitialLoading} />
                     ))}
-                    <div ref={ref}>
-                        <NewsCard news={null} ActionButton={null} isLoading={true} />
-                    </div>
+                    {hasNextPage
+                        ? <div ref={ref}><NewsCard news={null} ActionButton={null} isLoading={true} /></div>
+                        : <div className={styles.noMoreNews}>Новостей больше нет</div>
+                    }
                 </>
             }
         </div>

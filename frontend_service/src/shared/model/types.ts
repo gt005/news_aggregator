@@ -11,3 +11,8 @@ export enum NewsActionType {
     ADD = 'add',
     REMOVE = 'remove',
 }
+
+export interface FetchNewsListResult {
+    newsList: INews[],
+    hasNextPage: boolean;
+}

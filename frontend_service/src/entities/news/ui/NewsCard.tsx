@@ -1,5 +1,5 @@
 import React, { ReactElement, FC } from 'react';
-import { INews } from '@/shared/types';
+import { INews } from '@/shared/model/types';
 import { getFormattedTime, getFormattedDate } from '@/shared/lib/time-utils';
 import styles from './NewsCard.module.sass';
 import { Skeleton } from 'antd';
