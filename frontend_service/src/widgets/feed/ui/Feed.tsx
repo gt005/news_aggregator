@@ -1,41 +1,52 @@
+import { useState, type FC, useRef } from 'react';
+
 import { NewsCard } from '@/entities/news'
-import { INews } from '@/shared/types';
+import { INews } from '@/shared/model/types';
 import styles from './Feed.module.sass';
 import { AddToFolderButton } from '@/features/news/add-to-folder-button';
+import { RemoveFromFolderButton } from '@/features/news/remove-from-folder-button';
+import { useEffect } from 'react';
+import { useInView } from 'react-intersection-observer';
+import { NewsActionType } from '@/shared/model/types';
+import { FetchNewsListResult } from '@/shared/model/types';
+import useNewsFeed from '../model/hooks';
 
-const newsArray: INews[] = [
-    {
-        id: 1,
-        source: 'РБК',
-        title: 'Головная структура сети «ЕвроМедЦентр» перерегистрировалась в Россию',
-        text: 'Компания была зарегистрирована в САР на острове Октябрьский в Калининградской области. Торги бумаги ЕМС были приостановлены ранее в декабре. Возможно, пауза в торгах продлится около месяца',
-        link: 'http://example.com',
-        dateTime: new Date('2023-10-05T16:24:00')
-    },
-    {
-        id: 2,
-        source: 'РБК',
-        title: 'Головная структура сети «ЕвроМедЦентр» перерегистрировалась в Россию',
-        text: 'Компания была зарегистрирована в САР на острове Октябрьский в Калининградской области. Торги бумаги ЕМС были приостановлены ранее в декабре. Возможно, пауза в торгах продлится около месяца',
-        link: 'http://example.com',
-        dateTime: new Date('2023-10-05T16:24:00')
-    },
-    {
-        id: 3,
-        source: 'РБК',
-        title: 'Головная структура сети «ЕвроМедЦентр» перерегистрировалась в Россию',
-        text: 'Компания была зарегистрирована в САР на острове Октябрьский в Калининградской области. Торги бумаги ЕМС были приостановлены ранее в декабре. Возможно, пауза в торгах продлится около месяца',
-        link: 'http://example.com',
-        dateTime: new Date('2023-10-05T16:24:00')
-    }
-];
+interface FeedProps {
+    newsActionType: NewsActionType | null,
+    fetchNews: (page: number) => Promise<FetchNewsListResult>;
+}
 
-export const Feed = () => {
+export const Feed: FC<FeedProps> = ({ newsActionType, fetchNews }) => {
+    const { newsList, isInitialLoading, hasNextPage, loadNews } = useNewsFeed(fetchNews);
+    const { ref, inView } = useInView();
+
+    const ActionButton = newsActionType === NewsActionType.ADD
+        ? AddToFolderButton
+        : newsActionType === NewsActionType.REMOVE
+            ? RemoveFromFolderButton
+            : null;
+
+    useEffect(() => {
+        if (inView) loadNews();
+    }, [inView]);
+
     return (
         <div className={styles.container}>
-            {newsArray.map(news => (
-                <NewsCard key={news.id} news={news} ActionButton={AddToFolderButton} />
-            ))}
+            {isInitialLoading
+                ? Array.from({ length: 5 }).map((_, index) => (
+                    <NewsCard key={index} news={null} ActionButton={ActionButton} isLoading={isInitialLoading} />
+                ))
+                :
+                <>
+                    {newsList.map(news => (
+                        <NewsCard key={news.id} news={news} ActionButton={ActionButton} isLoading={isInitialLoading} />
+                    ))}
+                    {hasNextPage
+                        ? <div ref={ref}><NewsCard news={null} ActionButton={null} isLoading={true} /></div>
+                        : <div className={styles.noMoreNews}>Новостей больше нет</div>
+                    }
+                </>
+            }
         </div>
-    )
+    );
 }
