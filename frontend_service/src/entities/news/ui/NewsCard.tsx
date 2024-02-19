@@ -12,7 +12,7 @@ interface NewsCardProps {
 }
 
 export const NewsCard: FC<NewsCardProps> = ({ news, ActionButton, isLoading }) => {
-    if (isLoading) {
+    if (isLoading || news === null) {
         return (
             <div className={styles['news-card']}>
                 <Skeleton active />

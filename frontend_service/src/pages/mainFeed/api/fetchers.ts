@@ -5,7 +5,7 @@ import { serverUrl } from '@/shared/const';
 
 export const fetchMainFeedPageNews = async (page: number): Promise<FetchNewsListResult> => {
     const response = await axios.get(`/api/v1/news/?page=${page}`, {
-        baseURL: `${serverUrl}`
+        baseURL: serverUrl
     });
 
     if (response.status !== 200) {

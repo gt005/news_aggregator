@@ -2,7 +2,6 @@ import { FetchNewsListResult, INews } from '@/shared/model/types';
 import { useState, useEffect } from 'react';
 
 
-
 const useNewsFeed = (fetchNews: (page: number) => Promise<FetchNewsListResult>) => {
     const [hasNextPage, setHasNextPage] = useState(true);
     const [isInitialLoading, setIsInitialLoading] = useState(true);

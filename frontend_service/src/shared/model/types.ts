@@ -16,10 +16,14 @@ export interface INewsApiSchema {
     published_at: string;
 }
 
+export interface Folder {
+    id: string
+    name: string
+}
 
 export enum NewsActionType {
     ADD = 'add',
-    REMOVE = 'remove',
+    REMOVE = 'remove'
 }
 
 export interface FetchNewsListResult {

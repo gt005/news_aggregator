@@ -1,4 +1,4 @@
-import { useState, type FC, useRef } from 'react';
+import { type FC } from 'react';
 
 import { NewsCard } from '@/entities/news'
 import styles from './Feed.module.sass';
@@ -11,8 +11,8 @@ import { FetchNewsListResult } from '@/shared/model/types';
 import useNewsFeed from '../model/hooks';
 
 interface FeedProps {
-    newsActionType: NewsActionType | null,
-    fetchNews: (page: number) => Promise<FetchNewsListResult>;
+    newsActionType: NewsActionType | null
+    fetchNews: (page: number) => Promise<FetchNewsListResult>
 }
 
 export const Feed: FC<FeedProps> = ({ newsActionType, fetchNews }) => {
