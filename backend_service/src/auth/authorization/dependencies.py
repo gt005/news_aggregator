@@ -1,9 +1,9 @@
 from fastapi import Depends
 
-from auth.authorization.exceptions import EmailTaken
-from auth.authorization.schemas import AuthUser
-from common.dependencies import get_repository
-from users.services.query import UserQuery
+from src.auth.authorization.exceptions import EmailTaken
+from src.auth.authorization.schemas import AuthUser
+from src.common.dependencies import get_repository
+from src.users.services.query import UserQuery
 
 
 async def valid_user_create(

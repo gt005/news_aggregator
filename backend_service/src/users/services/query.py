@@ -1,6 +1,6 @@
-from common.services import AbstractRepositoryService
-from users.domain import User
-from users.models import UserModel
+from src.common.services import AbstractRepositoryService
+from src.users.domain import User
+from src.users.models import UserModel
 
 
 class UserQuery(AbstractRepositoryService):

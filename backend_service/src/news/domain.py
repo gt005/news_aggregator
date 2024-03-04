@@ -1,3 +1,4 @@
+from datetime import datetime
 from uuid import UUID
 
 from pydantic import BaseModel, HttpUrl
@@ -8,4 +9,4 @@ class News(BaseModel):
     title: str
     url: HttpUrl
     description: str
-    published_at: str
+    published_at: datetime

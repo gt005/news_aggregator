@@ -1,4 +1,4 @@
-from common.services import AbstractRepositoryService
+from src.common.services import AbstractRepositoryService
 
 
 class UserCommand(AbstractRepositoryService):
