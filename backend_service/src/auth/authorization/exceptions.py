@@ -1,5 +1,5 @@
 from auth.authorization.consts import ErrorMessages
-from exceptions import UnprocessableEntity
+from src.exceptions import UnprocessableEntity
 
 
 class EmailTaken(UnprocessableEntity):

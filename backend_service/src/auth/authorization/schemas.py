@@ -1,6 +1,6 @@
 from pydantic import BaseModel, EmailStr
 
-from auth.authorization.custom_types import Password
+from src.auth.authorization.custom_types import Password
 
 
 class AuthUser(BaseModel):

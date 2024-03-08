@@ -1,0 +1,3 @@
+POSTGRES_USER=gt005
+POSTGRES_PASSWORD=gt005_db_password
+POSTGRES_DB=api_service_db

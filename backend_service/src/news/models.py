@@ -12,4 +12,4 @@ class NewsModel(BaseMixin):
     url: Mapped[str] = mapped_column(unique=True)
     description: Mapped[str]
     published_at: Mapped[datetime]
-    folder_news: Mapped[list[FolderNewsModels]] = relationship(back_populates="news")
+    news_folders: Mapped[list["FolderNewsModels"]] = relationship(back_populates="news")
