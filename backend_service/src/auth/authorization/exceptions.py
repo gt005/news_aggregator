@@ -1,17 +1,14 @@
 from src.auth.authorization.consts import ErrorMessages
-from src.exceptions import UnprocessableEntity
-from fastapi import status
+from src.exceptions import NotAuthenticated, PermissionDenied, UnprocessableEntity
 
 
 class EmailTaken(UnprocessableEntity):
     DETAIL = ErrorMessages.EMAIL_TAKEN
 
 
-class IncorrectAuthorizationTokenSchema(UnprocessableEntity):
-    STATUS_CODE = status.HTTP_403_FORBIDDEN
+class IncorrectAuthorizationTokenSchema(PermissionDenied):
     DETAIL = ErrorMessages.INCORRECT_AUTHORIZATION_TOKEN_SCHEMA
 
 
-class InvalidAuthorizationToken(UnprocessableEntity):
-    STATUS_CODE = status.HTTP_401_UNAUTHORIZED
+class InvalidAuthorizationToken(NotAuthenticated):
     DETAIL = ErrorMessages.INVALID_AUTHORIZATION_TOKEN

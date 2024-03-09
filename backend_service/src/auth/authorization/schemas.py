@@ -1,7 +1,11 @@
 from pydantic import BaseModel, EmailStr, validator
 
 
-class PasswordValidationMixin:
+class RegisterUserSchema(BaseModel):
+    email: EmailStr
+    name: str
+    password: str
+
     @validator('password')
     def validate_password(cls, value):
         if len(value) < 8:
@@ -15,7 +19,6 @@ class PasswordValidationMixin:
         return value
 
 
-class RegisterUserSchema(BaseModel, PasswordValidationMixin):
+class LoginUserSchema(BaseModel):
     email: EmailStr
-    name: str
     password: str

@@ -1,9 +1,10 @@
 from uuid import uuid4
-from src.folders.models import FolderModel
-from src.folders.exceptions import FolderWithSuchTitleAlreadyExists
-from src.folders.services.query import FolderQuery
+
 from src.common.services import AbstractRepositoryService
 from src.folders.domain import Folder
+from src.folders.exceptions import FolderWithSuchTitleAlreadyExists
+from src.folders.models import FolderModel
+from src.folders.services.query import FolderQuery
 from src.users.models import UserModel
 
 

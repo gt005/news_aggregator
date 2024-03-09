@@ -26,6 +26,10 @@ class Settings(BaseSettings):
     SENDER_EMAIL_PORT: int
 
     # Auth settings
+    JWT_SECRET_KEY: str
+    JWT_ALGORITHM: str
+    ACCESS_TOKEN_LIFETIME: int
+    REFRESH_TOKEN_LIFETIME: int
     OTP_CODE_LIFETIME: int
     AUTHORIZATION_TOKEN_LIFETIME: int
 

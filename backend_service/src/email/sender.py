@@ -1,6 +1,8 @@
-from settings import settings
-import aiosmtplib
 from email.message import EmailMessage
+
+import aiosmtplib
+
+from settings import settings
 
 
 class EmailSender:

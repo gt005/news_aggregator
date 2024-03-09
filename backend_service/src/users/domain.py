@@ -1,6 +1,6 @@
 from uuid import UUID
-from passlib.context import CryptContext
 
+from passlib.context import CryptContext
 from pydantic import BaseModel, EmailStr
 
 
@@ -11,6 +11,10 @@ class User(BaseModel):
     id: UUID
     name: str
     email: EmailStr
+    hashed_password: str
+
+    class Config:
+        from_attributes = True
 
     @staticmethod
     def hash_password(password: str) -> str:

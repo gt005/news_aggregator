@@ -1,6 +1,6 @@
 from src.auth.otp_codes.consts import OTP_CODE_REDIS_KEY_PREFIX
-from src.redis import redis_storage
 from src.auth.otp_codes.domain import OtpCode
+from src.redis import redis_storage
 
 
 class OtpCodeQuery:

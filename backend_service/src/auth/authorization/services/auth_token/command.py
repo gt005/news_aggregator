@@ -1,6 +1,10 @@
-from src.auth.authorization.consts import AUTHORIZATION_TOKEN_LIFETIME, AUTHORIZATION_TOKEN_REDIS_KEY_PREFIX
-from src.auth.authorization.domain import AuthorizationToken
 import secrets
+
+from src.auth.authorization.consts import (
+    AUTHORIZATION_TOKEN_LIFETIME,
+    AUTHORIZATION_TOKEN_REDIS_KEY_PREFIX,
+)
+from src.auth.authorization.domain import AuthorizationToken
 from src.redis import redis_storage
 
 

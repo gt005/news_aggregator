@@ -1,6 +1,6 @@
+from fastapi_pagination.ext.sqlalchemy import paginate
 from sqlalchemy import select
 
-from fastapi_pagination.ext.sqlalchemy import paginate
 from src.common.services import AbstractRepositoryService
 from src.news.models import NewsModel
 

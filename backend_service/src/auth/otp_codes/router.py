@@ -1,12 +1,13 @@
 from fastapi import APIRouter
-from src.auth.otp_codes.services.query import OtpCodeQuery
-from src.auth.otp_codes.exceptions import OtpCodeIsNotValid
-from src.auth.authorization.services.command import AuthorizationTokenCommand
-from src.auth.otp_codes.domain import OtpCode
+
 from src.auth.authorization.domain import AuthorizationToken
-from src.email.sender import EmailSender
+from src.auth.authorization.services.auth_token.command import AuthorizationTokenCommand
+from src.auth.otp_codes.domain import OtpCode
+from src.auth.otp_codes.exceptions import OtpCodeIsNotValid
 from src.auth.otp_codes.schemas import SendOtpCodeSchema
 from src.auth.otp_codes.services.command import OtpCodeCommand
+from src.auth.otp_codes.services.query import OtpCodeQuery
+from src.email.sender import EmailSender
 
 
 otp_codes_v1_router = APIRouter(tags=["otp_codes"])

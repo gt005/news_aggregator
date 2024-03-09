@@ -1,7 +1,8 @@
 from uuid import UUID
-from sqlalchemy import select
-from src.common.services import AbstractRepositoryService
 
+from sqlalchemy import select
+
+from src.common.services import AbstractRepositoryService
 from src.folders.models import FolderModel
 
 

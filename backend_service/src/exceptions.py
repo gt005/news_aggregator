@@ -1,5 +1,11 @@
 from fastapi import status
+
 from src.common.exceptions import DetailedHTTPException
+
+
+class BadRequest(DetailedHTTPException):
+    STATUS_CODE = status.HTTP_400_BAD_REQUEST
+    DETAIL = "Bad request"
 
 
 class NotAuthenticated(DetailedHTTPException):
