@@ -1,9 +1,21 @@
-from pydantic import BaseModel, EmailStr
-
-from src.auth.authorization.custom_types import Password
+from pydantic import BaseModel, EmailStr, validator
 
 
-class AuthUser(BaseModel):
+class PasswordValidationMixin:
+    @validator('password')
+    def validate_password(cls, value):
+        if len(value) < 8:
+            raise ValueError('Password must be at least 8 characters long')
+        if not any(char.isdigit() for char in value):
+            raise ValueError('Password must contain at least one digit')
+        if not any(char.isupper() for char in value):
+            raise ValueError('Password must contain at least one uppercase letter')
+        if not any(char.islower() for char in value):
+            raise ValueError('Password must contain at least one lowercase letter')
+        return value
+
+
+class RegisterUserSchema(BaseModel, PasswordValidationMixin):
     email: EmailStr
     name: str
-    password: Password
+    password: str

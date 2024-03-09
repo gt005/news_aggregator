@@ -25,7 +25,7 @@ class FolderCommand(AbstractRepositoryService):
         )
 
         self.db_session.add(folder)
-        # TODO: Add commit?
+        await self.db_session.commit()
 
         return Folder(
             id=folder.id,
