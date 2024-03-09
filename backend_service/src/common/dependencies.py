@@ -1,10 +1,15 @@
 from typing import AsyncGenerator, Callable
+from uuid import UUID
 
-from fastapi import Depends
+import jwt
+from fastapi import Depends, Security
+from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from settings import settings
 from src.common.services import AbstractRepositoryService
 from src.database.session import async_session
+from src.exceptions import NotAuthenticated
 
 
 async def get_session() -> AsyncGenerator[AsyncSession, None]:
@@ -36,3 +41,27 @@ def get_repository(
         return repository(db_session)
 
     return _get_service
+
+
+def get_current_user_id_from_access_token(
+    authorization: HTTPAuthorizationCredentials = Security(HTTPBearer())
+) -> UUID:
+    if authorization.scheme != "Bearer":
+        raise NotAuthenticated()
+
+    try:
+        payload = jwt.decode(
+            authorization.credentials,
+            settings.JWT_SECRET_KEY,
+            algorithms=settings.JWT_ALGORITHM
+        )
+    except jwt.ExpiredSignatureError:
+        raise NotAuthenticated()
+
+    user_id: UUID = UUID(payload.get("user_id"))
+    token_type: str = payload.get("type")
+
+    if user_id is None or token_type != "access":
+        raise NotAuthenticated()
+
+    return user_id
