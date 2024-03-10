@@ -1,5 +1,5 @@
-from pytest_mock import MockerFixture
 from httpx import AsyncClient
+from pytest_mock import MockerFixture
 
 
 async def test_valid_case(client: AsyncClient, redis_setex_mock, mocker: MockerFixture):

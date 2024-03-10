@@ -1,12 +1,12 @@
 from uuid import UUID
 
 from fastapi import APIRouter, Depends
-from src.exceptions import NotFound
 
 from src.common.dependencies import (
     get_current_user_id_from_access_token,
     get_repository,
 )
+from src.exceptions import NotFound
 from src.folders.schemas import FolderCreateSchema, FolderPublicSchema
 from src.folders.services.command import FolderCommand
 from src.folders.services.query import FolderQuery

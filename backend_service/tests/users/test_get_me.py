@@ -1,5 +1,3 @@
-from datetime import datetime
-
 from httpx import AsyncClient
 
 from src.users.models import UserModel

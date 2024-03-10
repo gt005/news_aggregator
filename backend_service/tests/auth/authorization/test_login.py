@@ -1,7 +1,7 @@
 from httpx import AsyncClient
-from pytest_mock import MockerFixture
-from tests.consts import TEST_USER_DATA
+
 from src.users.models import UserModel
+from tests.consts import TEST_USER_DATA
 
 
 async def test_valid_case(client: AsyncClient, test_user: UserModel):

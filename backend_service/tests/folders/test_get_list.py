@@ -1,7 +1,7 @@
 from httpx import AsyncClient
+from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.folders.models import FolderModel
-from sqlalchemy.ext.asyncio import AsyncSession
 
 
 async def test_valid_case(auth_client: AsyncClient, db_session: AsyncSession, folder: FolderModel):

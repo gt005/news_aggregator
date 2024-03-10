@@ -1,22 +1,22 @@
-import time
-from uuid import uuid4
-from passlib.context import CryptContext
-import jwt
 import asyncio
+import time
 from typing import Generator
-from pytest_mock import MockerFixture
+from uuid import uuid4
 
+import jwt
 import pytest
 from httpx import AsyncClient
 from httpx._transports.asgi import ASGITransport
+from passlib.context import CryptContext
+from pytest_mock import MockerFixture
 from sqlalchemy.ext.asyncio import AsyncEngine, AsyncSession, create_async_engine
 from sqlalchemy.orm import sessionmaker
-from src.folders.models import FolderModel
 
 from main import app
 from settings import settings
 from src.common.dependencies import get_session
 from src.database.models import BaseMixin
+from src.folders.models import FolderModel
 from src.users.models import UserModel
 from tests.consts import OTHER_TEST_USER_DATA, TEST_USER_DATA
 
