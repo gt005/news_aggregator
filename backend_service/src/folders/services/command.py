@@ -1,19 +1,20 @@
-from uuid import uuid4
+from uuid import UUID, uuid4
+
+from sqlalchemy import delete, update
 
 from src.common.services import AbstractRepositoryService
 from src.folders.domain import Folder
 from src.folders.exceptions import FolderWithSuchTitleAlreadyExists
 from src.folders.models import FolderModel
 from src.folders.services.query import FolderQuery
-from src.users.models import UserModel
 
 
 class FolderCommand(AbstractRepositoryService):
-    async def create(self, *, user: UserModel, title: str) -> Folder:
+    async def create(self, *, user_id: UUID, title: str) -> Folder:
         query_service = FolderQuery(db_session=self.db_session)
 
         existed_folder = await query_service.get_by_user_id_and_title(
-            user_id=user.id,
+            user_id=user_id,
             title=title
         )
         if existed_folder:
@@ -21,7 +22,7 @@ class FolderCommand(AbstractRepositoryService):
 
         folder = FolderModel(
             id=uuid4(),
-            user_id=user.id,
+            user_id=user_id,
             title=title
         )
 
@@ -33,3 +34,26 @@ class FolderCommand(AbstractRepositoryService):
             user_id=folder.user_id,
             title=folder.title
         )
+
+    async def update_by_id(self, *, id: UUID, title: str) -> Folder:
+        query = (
+            update(FolderModel)
+            .where(FolderModel.id == id)
+            .values(title=title)
+            .returning(FolderModel.id, FolderModel.user_id, FolderModel.title)
+        )
+
+        query_result = await self.db_session.execute(query)
+        folder = query_result.fetchone()
+
+        return Folder(
+            id=folder[0],
+            user_id=folder[1],
+            title=folder[2]
+        )
+
+    async def delete_by_id(self, *, id: UUID) -> None:
+        query = delete(FolderModel).where(FolderModel.id == id)
+
+        await self.db_session.execute(query)
+        await self.db_session.commit()
