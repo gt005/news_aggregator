@@ -1,3 +1,5 @@
+import os
+
 from pydantic_settings import BaseSettings
 
 
@@ -51,7 +53,7 @@ class Settings(BaseSettings):
         return f"redis://{self.REDIS_HOST}:{self.REDIS_PORT}/0"
 
     class Config:
-        env_file = ".env"
+        env_file = ".env" if os.path.isfile(".env") else ".env.example"
 
 
 settings = Settings()
