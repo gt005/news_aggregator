@@ -61,3 +61,8 @@ lerna-debug.log*
 *.sln
 *.sw?
 todo.md
+
+
+# Database settings
+.database_env
+.database_test_env

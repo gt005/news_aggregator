@@ -4,7 +4,7 @@ from sqlalchemy import select
 
 from src.common.services import AbstractRepositoryService
 from src.folders.domain import Folder
-from src.folders.models import FolderModel
+from src.folders.models import FolderModel, FolderNewsModels
 
 
 class FolderQuery(AbstractRepositoryService):
@@ -28,3 +28,9 @@ class FolderQuery(AbstractRepositoryService):
 
         query_result = await self.db_session.scalar(query)
         return Folder.from_orm(query_result) if query_result else None
+
+    async def get_news_ids_by_folder_id(self, *, folder_id: UUID) -> list[UUID]:
+        query = select(FolderNewsModels.news_id).where(FolderNewsModels.folder_id == folder_id)
+
+        query_result = await self.db_session.scalars(query)
+        return list(query_result.all())
