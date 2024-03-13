@@ -5,7 +5,7 @@ from sqlalchemy import delete, update
 from src.common.services import AbstractRepositoryService
 from src.folders.domain import Folder
 from src.folders.exceptions import FolderWithSuchTitleAlreadyExists
-from src.folders.models import FolderModel
+from src.folders.models import FolderModel, FolderNewsModels
 from src.folders.services.query import FolderQuery
 
 
@@ -54,6 +54,24 @@ class FolderCommand(AbstractRepositoryService):
 
     async def delete_by_id(self, *, id: UUID) -> None:
         query = delete(FolderModel).where(FolderModel.id == id)
+
+        await self.db_session.execute(query)
+        await self.db_session.commit()
+
+    async def add_news_to_folder(self, *, folder_id: UUID, news_id: UUID) -> None:
+        folder_news = FolderNewsModels(
+            folder_id=folder_id,
+            news_id=news_id
+        )
+
+        self.db_session.add(folder_news)
+        await self.db_session.commit()
+
+    async def remove_news_from_folder(self, *, folder_id: UUID, news_id: UUID) -> None:
+        query = delete(FolderNewsModels).where(
+            FolderNewsModels.folder_id == folder_id,
+            FolderNewsModels.news_id == news_id
+        )
 
         await self.db_session.execute(query)
         await self.db_session.commit()

@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  db:
+    container_name: news_aggregator_db
+    image: postgres
+    restart: always
+    env_file:
+      - .database_env
+    volumes:
+      - news_aggregator_db_data:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+  
+  db_test:
+    container_name: news_aggregator_db_test
+    image: postgres
+    restart: always
+    env_file:
+      - .database_test_env
+    ports:
+      - 5433:5432
+  
+  redis:
+    container_name: news_aggregator_redis
+    image: redis
+    restart: always
+    ports:
+      - 6379:6379
+
+volumes:
+  news_aggregator_db_data:

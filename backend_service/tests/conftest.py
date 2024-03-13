@@ -1,4 +1,5 @@
 import asyncio
+from datetime import datetime
 import time
 from typing import Generator
 from uuid import uuid4
@@ -13,10 +14,11 @@ from sqlalchemy.ext.asyncio import AsyncEngine, AsyncSession, create_async_engin
 from sqlalchemy.orm import sessionmaker
 
 from main import app
+from src.news.models import NewsModel
 from settings import settings
 from src.common.dependencies import get_session
 from src.database.models import BaseMixin
-from src.folders.models import FolderModel
+from src.folders.models import FolderModel, FolderNewsModels
 from src.users.models import UserModel
 from tests.consts import OTHER_TEST_USER_DATA, TEST_USER_DATA
 
@@ -135,3 +137,26 @@ async def folder(db_session: AsyncSession, test_user: UserModel) -> FolderModel:
     db_session.add(folder)
     await db_session.commit()
     return folder
+
+
+@pytest.fixture(scope='function')
+async def news(db_session: AsyncSession) -> NewsModel:
+    news = NewsModel(
+        id=uuid4(),
+        title="test_news",
+        url="https://test.com",
+        description="test_description",
+        published_at=datetime.now()
+    )
+    db_session.add(news)
+    await db_session.commit()
+    return news
+
+
+@pytest.fixture(scope='function')
+async def news_in_folder(db_session: AsyncSession, folder: FolderModel, news: NewsModel) -> NewsModel:
+    folder_news = FolderNewsModels(id=uuid4(), folder_id=folder.id, news_id=news.id)
+
+    db_session.add(folder_news)
+    await db_session.commit()
+    return news
