@@ -1,8 +1,8 @@
 from fastapi_pagination.ext.sqlalchemy import paginate
 from sqlalchemy import select
 
-from src.news.domain import News
 from src.common.services import AbstractRepositoryService
+from src.news.domain import News
 from src.news.models import NewsModel
 
 

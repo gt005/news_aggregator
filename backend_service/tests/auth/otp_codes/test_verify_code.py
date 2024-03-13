@@ -2,7 +2,12 @@ from httpx import AsyncClient
 from pytest_mock import MockerFixture
 
 
-async def test_valid_case(client: AsyncClient, redis_setex_mock, mocker: MockerFixture):
+async def test_valid_case(
+    client: AsyncClient,
+    redis_setex_mock,
+    redis_delete_mock,
+    mocker: MockerFixture
+):
     otp_code = 123_456
 
     redis_get_mock = mocker.patch(
@@ -19,6 +24,7 @@ async def test_valid_case(client: AsyncClient, redis_setex_mock, mocker: MockerF
 
     redis_setex_mock.assert_called_once()
     redis_get_mock.assert_called_once()
+    redis_delete_mock.assert_called_once()
 
 
 async def test_incorrect_code(client: AsyncClient, redis_setex_mock, mocker: MockerFixture):

@@ -7,6 +7,7 @@ from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from settings import settings
+from src.common.exceptions import IncorrectHeaderTokenSchema
 from src.common.services import AbstractRepositoryService
 from src.database.session import async_session
 from src.exceptions import NotAuthenticated
@@ -65,3 +66,12 @@ def get_current_user_id_from_access_token(
         raise NotAuthenticated()
 
     return user_id
+
+
+async def get_header_token_string(
+    token: HTTPAuthorizationCredentials = Security(HTTPBearer())
+) -> str:
+    if not token or token.scheme.lower() != 'bearer' or token.credentials is None:
+        raise IncorrectHeaderTokenSchema()
+
+    return token.credentials

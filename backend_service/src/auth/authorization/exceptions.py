@@ -1,5 +1,5 @@
 from src.auth.authorization.consts import ErrorMessages
-from src.exceptions import NotAuthenticated, PermissionDenied, UnprocessableEntity
+from src.exceptions import PermissionDenied, UnprocessableEntity
 
 
 class EmailTaken(UnprocessableEntity):
@@ -8,7 +8,3 @@ class EmailTaken(UnprocessableEntity):
 
 class IncorrectAuthorizationTokenSchema(PermissionDenied):
     DETAIL = ErrorMessages.INCORRECT_AUTHORIZATION_TOKEN_SCHEMA
-
-
-class InvalidAuthorizationToken(NotAuthenticated):
-    DETAIL = ErrorMessages.INVALID_AUTHORIZATION_TOKEN

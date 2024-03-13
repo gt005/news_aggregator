@@ -1,6 +1,6 @@
 import asyncio
-from datetime import datetime
 import time
+from datetime import datetime
 from typing import Generator
 from uuid import uuid4
 
@@ -14,11 +14,12 @@ from sqlalchemy.ext.asyncio import AsyncEngine, AsyncSession, create_async_engin
 from sqlalchemy.orm import sessionmaker
 
 from main import app
-from src.news.models import NewsModel
 from settings import settings
 from src.common.dependencies import get_session
 from src.database.models import BaseMixin
 from src.folders.models import FolderModel, FolderNewsModels
+from src.news.domain import NewsSource
+from src.news.models import NewsModel
 from src.users.models import UserModel
 from tests.consts import OTHER_TEST_USER_DATA, TEST_USER_DATA
 
@@ -132,6 +133,12 @@ async def redis_setex_mock(mocker: MockerFixture):
 
 
 @pytest.fixture(scope='function')
+async def redis_delete_mock(mocker: MockerFixture):
+    redis_mock = mocker.patch("src.redis.redis_storage.delete", new=mocker.AsyncMock())
+    yield redis_mock
+
+
+@pytest.fixture(scope='function')
 async def folder(db_session: AsyncSession, test_user: UserModel) -> FolderModel:
     folder = FolderModel(id=uuid4(), title="test_folder", user_id=test_user.id)
     db_session.add(folder)
@@ -145,6 +152,7 @@ async def news(db_session: AsyncSession) -> NewsModel:
         id=uuid4(),
         title="test_news",
         url="https://test.com",
+        source=NewsSource.RBC.value,
         description="test_description",
         published_at=datetime.now()
     )
@@ -154,7 +162,11 @@ async def news(db_session: AsyncSession) -> NewsModel:
 
 
 @pytest.fixture(scope='function')
-async def news_in_folder(db_session: AsyncSession, folder: FolderModel, news: NewsModel) -> NewsModel:
+async def news_in_folder(
+    db_session: AsyncSession,
+    folder: FolderModel,
+    news: NewsModel
+) -> NewsModel:
     folder_news = FolderNewsModels(id=uuid4(), folder_id=folder.id, news_id=news.id)
 
     db_session.add(folder_news)

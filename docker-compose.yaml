@@ -28,5 +28,20 @@ services:
     ports:
       - 6379:6379
 
+  fastapi_backend:
+    container_name: news_aggregator_fastapi
+    build:
+      context: .
+      dockerfile: BackendDockerfile
+    restart: always
+    env_file:
+      - backend_service/.env
+    ports:
+      - 8000:8000
+    depends_on:
+      - db
+      - db_test
+      - redis
+
 volumes:
   news_aggregator_db_data:

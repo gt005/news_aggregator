@@ -1,0 +1,5 @@
+from settings import settings
+
+
+CREATE_NEWS_TOKEN_REDIS_KEY_PREFIX = settings.REDIS_KEY_PREFIX + ':auth_token'
+CREATE_NEWS_TOKEN_LIFETIME = settings.AUTHORIZATION_TOKEN_LIFETIME

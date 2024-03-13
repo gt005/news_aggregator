@@ -2,7 +2,6 @@ from uuid import UUID
 
 from fastapi import APIRouter, Depends
 
-from src.news.services.query import NewsQuery
 from src.common.dependencies import (
     get_current_user_id_from_access_token,
     get_repository,
@@ -11,6 +10,7 @@ from src.exceptions import NotFound
 from src.folders.schemas import FolderCreateSchema, FolderPublicSchema
 from src.folders.services.command import FolderCommand
 from src.folders.services.query import FolderQuery
+from src.news.services.news.query import NewsQuery
 
 
 folders_v1_router = APIRouter(tags=['folders'])
@@ -95,7 +95,7 @@ async def add_news_to_folder(
     existed_folder = await folder_query.get_by_id(id=folder_id)
     if not existed_folder or existed_folder.user_id != user_id:
         raise NotFound()
-    
+
     existed_news = await news_query.get_by_id(id=news_id)
     if not existed_news:
         raise NotFound()

@@ -33,6 +33,9 @@ class Settings(BaseSettings):
     OTP_CODE_LIFETIME: int
     AUTHORIZATION_TOKEN_LIFETIME: int
 
+    # News settings
+    CREATE_NEWS_TOKEN_LIFETIME: int
+
     @property
     def DB_URL(self) -> str:
         return f"postgresql+asyncpg://{self.POSTGRES_USER}:{self.POSTGRES_PASSWORD}" \

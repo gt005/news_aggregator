@@ -23,6 +23,7 @@ def upgrade() -> None:
     op.create_table('news',
     sa.Column('title', sa.String(), nullable=False),
     sa.Column('url', sa.String(), nullable=False),
+    sa.Column('source', sa.String(), nullable=False),
     sa.Column('description', sa.String(), nullable=False),
     sa.Column('published_at', sa.DateTime(), nullable=False),
     sa.Column('id', sa.Uuid(), nullable=False),
