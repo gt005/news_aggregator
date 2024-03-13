@@ -1,19 +1,15 @@
-import secrets
-
 from src.auth.authorization.consts import (
     AUTHORIZATION_TOKEN_LIFETIME,
     AUTHORIZATION_TOKEN_REDIS_KEY_PREFIX,
 )
 from src.auth.authorization.domain import AuthorizationToken
+from src.common.utils import generate_token
 from src.redis import redis_storage
 
 
 class AuthorizationTokenCommand:
-    def _generate_token(self) -> str:
-        return secrets.token_urlsafe(32)
-
     async def create_for_email(self, email: str) -> AuthorizationToken:
-        auth_token = self._generate_token()
+        auth_token = generate_token()
 
         await redis_storage.setex(
             f'{AUTHORIZATION_TOKEN_REDIS_KEY_PREFIX}:{email}',

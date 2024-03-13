@@ -1,16 +1,13 @@
 from fastapi import APIRouter, Depends
 
-from src.auth.authorization.dependencies import (
-    get_authorization_token_string,
-    get_validated_registration_user,
-)
+from src.auth.authorization.dependencies import get_validated_registration_user
 from src.auth.authorization.domain import JWT
-from src.auth.authorization.exceptions import InvalidAuthorizationToken
 from src.auth.authorization.schemas import LoginUserSchema, RegisterUserSchema
 from src.auth.authorization.services.auth_token.command import AuthorizationTokenCommand
 from src.auth.authorization.services.auth_token.query import AuthorizationTokenQuery
 from src.auth.authorization.services.jwt.command import JWTCommand
-from src.common.dependencies import get_repository
+from src.common.dependencies import get_header_token_string, get_repository
+from src.common.exceptions import IncorrectHeaderTokenSchema
 from src.users.services.command import UserCommand
 from src.users.services.query import UserQuery
 
@@ -21,12 +18,12 @@ authorization_v1_router = APIRouter(tags=['authorization'])
 @authorization_v1_router.post('/registration')
 async def registration(
     register_user_schema: RegisterUserSchema = Depends(get_validated_registration_user),
-    authorization_token: str = Depends(get_authorization_token_string),
+    authorization_token: str = Depends(get_header_token_string),
     user_command: UserCommand = Depends(get_repository(UserCommand))
 ) -> JWT:
     auth_token = await AuthorizationTokenQuery().get_by_email(email=register_user_schema.email)
     if auth_token is None or auth_token.token != authorization_token:
-        raise InvalidAuthorizationToken()
+        raise IncorrectHeaderTokenSchema()
 
     user = await user_command.create(
         email=register_user_schema.email,
@@ -49,6 +46,6 @@ async def login(
         login_user_schema.password,
         user.hashed_password
     ):
-        raise InvalidAuthorizationToken()
+        raise IncorrectHeaderTokenSchema()
 
     return JWTCommand().create(user_id=user.id)
