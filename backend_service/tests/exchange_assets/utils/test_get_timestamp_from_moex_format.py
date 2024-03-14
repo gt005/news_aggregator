@@ -1,4 +1,5 @@
 from datetime import datetime
+
 from src.exchange_assets.utils import get_timestamp_from_moex_format
 
 

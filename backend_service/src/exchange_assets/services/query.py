@@ -1,8 +1,12 @@
 from datetime import datetime
+
 from httpx import AsyncClient
 
-from src.exchange_assets.utils import get_moex_time_format, get_timestamp_from_moex_format
 from src.exchange_assets.domain import AssetCandle, ExchangeAsset
+from src.exchange_assets.utils import (
+    get_moex_time_format,
+    get_timestamp_from_moex_format,
+)
 
 
 class ExchangeAssetsQuery:

@@ -2,10 +2,10 @@ from fastapi import APIRouter
 
 from src.auth.authorization.routers import authorization_v1_router
 from src.auth.otp_codes.router import otp_codes_v1_router
+from src.exchange_assets.router import exchange_assets_v1_router
 from src.folders.router import folders_v1_router
 from src.news.router import news_v1_router
 from src.users.router import user_v1_router
-from src.exchange_assets.router import exchange_assets_v1_router
 
 
 router_v1 = APIRouter()

@@ -1,9 +1,10 @@
 from datetime import datetime
+
 from fastapi import APIRouter
 
 from src.exceptions import BadRequest
+from src.exchange_assets.domain import AssetCandle, ExchangeAsset
 from src.exchange_assets.services.query import ExchangeAssetsQuery
-from src.exchange_assets.domain import ExchangeAsset, AssetCandle
 
 
 exchange_assets_v1_router = APIRouter(tags=["exchange_assets"])

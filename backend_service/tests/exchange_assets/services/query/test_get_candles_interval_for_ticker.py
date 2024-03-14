@@ -1,4 +1,5 @@
 from datetime import datetime
+
 from src.exchange_assets.services.query import ExchangeAssetsQuery
 
 
