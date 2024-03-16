@@ -1,1 +1,1 @@
-export const serverUrl = 'localhost:8000';
+export const serverUrl = 'fastapi_backend:8000';

@@ -1,6 +1,17 @@
 version: '3.8'
 
 services:
+  nginx:
+    image: nginx:latest
+    container_name: news_aggregator_nginx
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx:/etc/nginx/conf.d
+    depends_on:
+      - fastapi_backend
+      - frontend_service
+    restart: always
   db:
     container_name: news_aggregator_db
     image: postgres
@@ -9,8 +20,6 @@ services:
       - .database_env
     volumes:
       - news_aggregator_db_data:/var/lib/postgresql/data
-    ports:
-      - 5432:5432
   
   db_test:
     container_name: news_aggregator_db_test
@@ -18,15 +27,11 @@ services:
     restart: always
     env_file:
       - .database_test_env
-    ports:
-      - 5433:5432
   
   redis:
     container_name: news_aggregator_redis
     image: redis
     restart: always
-    ports:
-      - 6379:6379
 
   fastapi_backend:
     container_name: news_aggregator_fastapi
@@ -37,11 +42,22 @@ services:
     env_file:
       - backend_service/.env
     ports:
-      - 8000:8000
+      - "8000"
     depends_on:
       - db
       - db_test
       - redis
+
+  frontend_service:
+    container_name: news_aggregator_frontend
+    build:
+      context: .
+      dockerfile: FrontendDockerfile
+    restart: always
+    ports:
+      - "5173"
+    depends_on:
+      - fastapi_backend
 
 volumes:
   news_aggregator_db_data:
