@@ -12,13 +12,14 @@ const useNewsFeed = (fetchNews: (page: number) => Promise<FetchNewsListResult>) 
     const loadNews = async () => {
         if (!hasNextPage) return;
 
-        const fetchedNews = await fetchNews(currentPage);
-        const newsWithDateObjects = fetchedNews.newsList.map(news => ({
+        const fetchedNews: FetchNewsListResult = await fetchNews(currentPage);
+
+        const newsWithDateObjects = fetchedNews.items.map(news => ({
             ...news,
-            dateTime: new Date(news.dateTime)
+            published_at: new Date(news.published_at)
         }));
         setNewsList(prev => [...prev, ...newsWithDateObjects]);
-        setHasNextPage(fetchedNews.hasNextPage);
+        setHasNextPage(fetchedNews.page < fetchedNews.pages);
         setCurrentPage(prev => prev + 1);
         setIsInitialLoading(false);
     };

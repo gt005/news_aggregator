@@ -4,5 +4,8 @@ start:
 stop:
 	docker compose down
 
-start_dev:
+start_back_dev:
 	docker compose up db db_test redis
+
+start_front_dev:
+	docker compose up db db_test redis fastapi_backend

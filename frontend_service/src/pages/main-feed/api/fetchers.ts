@@ -4,9 +4,14 @@ import { serverUrl } from '@/shared/const';
 
 
 export const fetchMainFeedPageNews = async (page: number): Promise<FetchNewsListResult> => {
-    const response = await axios.get(`/feed?page=${page}`, {
-        baseURL: `http://${serverUrl}`,  // TODO: Replace 'http' with 'https' if necessary
+    const response = await axios.get(`/api/v1/news/?page=${page}`, {
+        baseURL: `${serverUrl}`
     });
+
+    if (response.status !== 200) {
+        throw new Error('Failed to fetch news');
+    }
+    console.log("data:", response.data);
 
     return response.data;
 }
