@@ -1,11 +1,21 @@
 export interface INews {
-    id: number,
+    id: string,
+    title: string,
+    url: string,
     source: string,
-    title?: string,
-    text: string,
-    link: string,
-    dateTime: Date
+    description: string,
+    published_at: Date;
 }
+
+export interface INewsApiSchema {
+    id: string,
+    title: string,
+    url: string,
+    source: string,
+    description: string,
+    published_at: string;
+}
+
 
 export enum NewsActionType {
     ADD = 'add',
@@ -13,6 +23,7 @@ export enum NewsActionType {
 }
 
 export interface FetchNewsListResult {
-    newsList: INews[],
-    hasNextPage: boolean;
+    items: INewsApiSchema[],
+    page: number,
+    pages: number;
 }
