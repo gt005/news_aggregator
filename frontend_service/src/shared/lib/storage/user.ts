@@ -12,3 +12,7 @@ export function setCurrentUser(user: User): void {
     const userStr = JSON.stringify(user);
     localStorage.setItem('currentUser', userStr);
 }
+
+export function removeCurrentUser(): void {
+    localStorage.removeItem('currentUser');
+}

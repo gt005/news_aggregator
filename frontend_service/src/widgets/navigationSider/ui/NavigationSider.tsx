@@ -6,6 +6,7 @@ import { User } from "@/shared/model/types/users";
 import styles from './NavigationSider.module.sass'
 import { LoginModal } from "@/widgets/loginModal";
 import { RegistrationModal } from "@/widgets/registrationModal";
+import { Link } from "react-router-dom";
 
 const { Sider, Content } = Layout;
 
@@ -30,13 +31,19 @@ export const NavigationSider: FC = () => {
                 <Flex align="middle" className={styles.flexInsideContainder}>
                     {user ? (
                         <>
-                            <div>Добрый день, <a className={styles.profileLink} href={`/profile/${user.id}`}>{user.name}</a></div>
+                            <div className={styles.mainText}>Добрый день, <a className={styles.profileLink} href={`/profile/${user.id}`}>{user.name}</a></div>
                         </>
                     ) : (
                         <>
-                            <div>Добрый день, <a className={styles.loginOpenModalLink} onClick={() => setIsLoginModalVisible(true)}>войти</a></div>
+                            <div className={styles.mainText}>Добрый день, <a className={styles.loginOpenModalLink} onClick={() => setIsLoginModalVisible(true)}>войти</a></div>
                         </>
                     )}
+                    <a className={styles.mainFeedLink} href={`/`}>
+                        <Button type="primary" block>
+                            Лента
+                        </Button>
+                    </a>
+
                     <div className={styles.foldersContainer}>
                         <MyFolderInlineButtonsBlock />
                     </div>
@@ -58,7 +65,6 @@ export const NavigationSider: FC = () => {
                     )}
                 </div>
             </Modal>
-
         </>
     )
 }

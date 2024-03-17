@@ -30,21 +30,22 @@ export const Feed: FC<FeedProps> = ({ newsActionType, fetchNews }) => {
 
     return (
         <div className={styles.container}>
-            {isInitialLoading
-                ? Array.from({ length: 5 }).map((_, index) => (
+            {isInitialLoading ? (
+                Array.from({ length: 5 }).map((_, index) => (
                     <NewsCard key={index} news={null} ActionButton={ActionButton} isLoading={isInitialLoading} />
                 ))
-                :
+            ) : (
                 <>
-                    {newsList.map(news => (
-                        <NewsCard key={news.id} news={news} ActionButton={ActionButton} isLoading={isInitialLoading} />
-                    ))}
-                    {hasNextPage
-                        ? <div ref={ref}><NewsCard news={null} ActionButton={null} isLoading={true} /></div>
-                        : <div className={styles.noMoreNews}>Новостей больше нет</div>
-                    }
+                    {newsList.length > 0 ? (
+                        newsList.map(news => (
+                            <NewsCard key={news.id} news={news} ActionButton={ActionButton} isLoading={isInitialLoading} />
+                        ))
+                    ) : (
+                        <div className={styles.emptyFeed}>В ленте пусто</div>
+                    )}
+                    {hasNextPage && <div ref={ref}><NewsCard news={null} ActionButton={null} isLoading={true} /></div>}
                 </>
-            }
+            )}
         </div>
     );
 }

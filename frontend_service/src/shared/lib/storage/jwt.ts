@@ -13,3 +13,7 @@ export function setJwtToken(jwtToken: JwtToken): void {
     const jwtTokenStr = JSON.stringify(jwtToken);
     localStorage.setItem('jwtToken', jwtTokenStr);
 }
+
+export function removeJwtToken(): void {
+    localStorage.removeItem('jwtToken');
+}

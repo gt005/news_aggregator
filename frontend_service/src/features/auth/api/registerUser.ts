@@ -13,7 +13,6 @@ interface RegisterUserParams {
 
 
 export const registerUser = async ({ authorizationToken, email, name, password }: RegisterUserParams): Promise<JwtToken> => {
-    console.log(`authorizationToken: ${authorizationToken.token} email: ${email} name: ${name} password: ${password}`);
     const response = await axios.post(
         `/api/v1/authorization/registration`,
         {

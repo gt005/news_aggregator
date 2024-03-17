@@ -11,7 +11,7 @@ interface FolderInlineButtonProps {
 export const FolderInlineButton: FC<FolderInlineButtonProps> = ({ folder }) => {
     return (
         <Link className={styles.container} to={`/folder/${folder.id}`}>
-            <div className={styles.title}>{folder.name}</div>
+            <div className={styles.title}>{folder.title}</div>
         </Link>
     )
 }

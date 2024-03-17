@@ -6,7 +6,7 @@ import { verifyOtpCode } from '@/features/auth/api/verifyOtpCode';
 import { registerUser } from '@/features/auth/api/registerUser';
 import { setJwtToken } from '@/shared/lib/storage/jwt';
 import styles from './RegistrationModal.module.sass';
-import { setCurrentUser } from '@/shared/lib/storage/user';
+import { getCurrentUser, setCurrentUser } from '@/shared/lib/storage/user';
 import { fetchCurrentUser } from '@/shared/api/users';
 
 type RegistrationFieldsType = {
@@ -49,7 +49,6 @@ export const RegistrationModal: FC = () => {
             const authorizationToken = await verifyOtpCode(
                 { email: formData.email, code: otpCode.otpCode }
             );
-            console.log(authorizationToken);
             const JwtToken = await registerUser(
                 {
                     authorizationToken: authorizationToken,
@@ -60,7 +59,7 @@ export const RegistrationModal: FC = () => {
             );
             setJwtToken(JwtToken);
             setCurrentUser(await fetchCurrentUser());
-            navigate('/');
+            navigate(`/profile/${getCurrentUser()!.id}`);
         } catch (error) {
             setErorrMessage('Неправильный логин или пароль');
         }

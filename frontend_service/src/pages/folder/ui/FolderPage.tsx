@@ -4,9 +4,8 @@ import { Feed } from '@/widgets/feed'
 import Title from "@/shared/ui/Title"
 import { FC, useEffect, useState } from "react"
 import { Layout } from 'antd';
-import { fetchFolderNews } from "../api/fetchers";
 import { useParams } from "react-router-dom";
-import { fetchFolderById } from "@/shared/api/folder";
+import { fetchFolderById, fetchFolderNews } from "@/shared/api/folder";
 import { NavigationSider } from "@/widgets/navigationSider";
 
 
@@ -43,7 +42,7 @@ export const FolderPage: FC = () => {
 
     return (
         <>
-            <Title title={`Папка ${folder!.name}`} />
+            <Title title={`Папка ${folder!.title}`} />
             <Layout hasSider>
                 <NavigationSider />
                 <Content>

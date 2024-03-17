@@ -14,7 +14,7 @@ type LoginFieldType = {
 };
 
 
-export const LoginModal: FC= () => {
+export const LoginModal: FC = () => {
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
     const navigate = useNavigate();
 
@@ -26,8 +26,7 @@ export const LoginModal: FC= () => {
             });
             setJwtToken(JwtToken);
             setCurrentUser(await fetchCurrentUser());
-            console.log(getCurrentUser());
-            navigate('/');
+            navigate(`/profile/${getCurrentUser()!.id}`);
         } catch (error) {
             setErrorMessage('Неправильный логин или пароль');
         }
@@ -35,46 +34,46 @@ export const LoginModal: FC= () => {
 
     return (
         <>
-        {errorMessage && <Alert className={styles.alertMessage} message={errorMessage} type="error" />}
-        <Form
-            name="loginForm"
-            labelCol={{ span: 8 }}
-            wrapperCol={{ span: 16 }}
-            style={{ maxWidth: 600 }}
-            initialValues={{ remember: true }}
-            onFinish={onLoginFinish}
-        >
-            <Form.Item<LoginFieldType>
-                label="Email"
-                name="email"
-                rules={[
-                    {
-                        type: 'email',
-                        message: 'Введите корректный email',
-                    },
-                    { 
-                        required: true,
-                        message: 'Введите email' 
-                    }
-                ]}
+            {errorMessage && <Alert className={styles.alertMessage} message={errorMessage} type="error" />}
+            <Form
+                name="loginForm"
+                labelCol={{ span: 8 }}
+                wrapperCol={{ span: 16 }}
+                style={{ maxWidth: 600 }}
+                initialValues={{ remember: true }}
+                onFinish={onLoginFinish}
             >
-                <Input />
-            </Form.Item>
+                <Form.Item<LoginFieldType>
+                    label="Email"
+                    name="email"
+                    rules={[
+                        {
+                            type: 'email',
+                            message: 'Введите корректный email',
+                        },
+                        {
+                            required: true,
+                            message: 'Введите email'
+                        }
+                    ]}
+                >
+                    <Input />
+                </Form.Item>
 
-            <Form.Item<LoginFieldType>
-                label="Пароль"
-                name="password"
-                rules={[{ required: true, message: 'Введите пароль' }]}
-            >
-                <Input.Password />
-            </Form.Item>
+                <Form.Item<LoginFieldType>
+                    label="Пароль"
+                    name="password"
+                    rules={[{ required: true, message: 'Введите пароль' }]}
+                >
+                    <Input.Password />
+                </Form.Item>
 
-            <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-                <Button type="primary" htmlType="submit">
-                    Войти
-                </Button>
-            </Form.Item>
-        </Form>
+                <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
+                    <Button type="primary" htmlType="submit">
+                        Войти
+                    </Button>
+                </Form.Item>
+            </Form>
         </>
     );
 };
