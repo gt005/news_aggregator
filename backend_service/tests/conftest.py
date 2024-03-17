@@ -151,7 +151,7 @@ async def news(db_session: AsyncSession) -> NewsModel:
     news = NewsModel(
         id=uuid4(),
         title="test_news",
-        url="https://test.com",
+        url="https://test.com/",
         source=NewsSource.RBC.value,
         description="test_description",
         published_at=datetime.now()

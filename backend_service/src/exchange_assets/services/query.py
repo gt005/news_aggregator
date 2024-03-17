@@ -31,9 +31,6 @@ class ExchangeAssetsQuery:
         end_time: datetime,
         interval: int
     ) -> list[AssetCandle]:
-        '''
-        https://iss.moex.com/iss/engines/stock/markets/shares/securities/SBER/candles.json?from=2021-01-01&interval=24
-        '''
         async with AsyncClient() as client:
             candles = await client.get(
                 'https://iss.moex.com/iss/engines/stock/'
