@@ -1,4 +1,4 @@
-import { Folder } from "@/shared/model/types"
+import { Folder } from "@/shared/model/types/folders"
 import { FC } from "react"
 import { Link } from "react-router-dom"
 import styles from './FolderInlineButton.module.sass'

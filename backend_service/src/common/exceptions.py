@@ -14,3 +14,8 @@ class DetailedHTTPException(HTTPException):
 class IncorrectHeaderTokenSchema(DetailedHTTPException):
     STATUS_CODE = status.HTTP_401_UNAUTHORIZED
     DETAIL = "Incorrect header token schema"
+
+
+class Unauthorized(DetailedHTTPException):
+    STATUS_CODE = status.HTTP_401_UNAUTHORIZED
+    DETAIL = "Unauthorized"

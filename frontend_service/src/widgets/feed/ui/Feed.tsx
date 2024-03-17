@@ -6,8 +6,7 @@ import { AddToFolderButton } from '@/features/news/add-to-folder-button';
 import { RemoveFromFolderButton } from '@/features/news/remove-from-folder-button';
 import { useEffect } from 'react';
 import { useInView } from 'react-intersection-observer';
-import { NewsActionType } from '@/shared/model/types';
-import { FetchNewsListResult } from '@/shared/model/types';
+import { NewsActionType, FetchNewsListResult } from '@/shared/model/types/news';
 import useNewsFeed from '../model/hooks';
 
 interface FeedProps {

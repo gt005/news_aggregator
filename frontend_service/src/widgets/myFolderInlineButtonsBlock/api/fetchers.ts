@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { Folder } from "@/shared/model/types";
+import { Folder } from "@/shared/model/types/folders";
 import { serverUrl } from '@/shared/const';
 
 

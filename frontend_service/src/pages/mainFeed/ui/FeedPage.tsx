@@ -1,9 +1,10 @@
 import Title from '@/shared/ui/Title'
-import { NewsActionType } from '@/shared/model/types';
+import { NewsActionType } from '@/shared/model/types/news';
 import { Feed } from '@/widgets/feed'
 import { fetchMainFeedPageNews } from '../api/fetchers';
 import { Layout } from 'antd';
 import { NavigationSider } from '@/widgets/navigationSider';
+import styles from './FeedPage.module.sass'
 
 
 const { Sider, Content } = Layout;
@@ -14,10 +15,12 @@ export const FeedPage = () => {
         <>
             <Title title="Новости" />
             <Layout hasSider>
-                <NavigationSider />
-                <Content>
-                    <Feed newsActionType={NewsActionType.ADD} fetchNews={fetchMainFeedPageNews} />
-                </Content>
+                <NavigationSider  />
+                <Layout>
+                    <Content className={styles.container}>
+                        <Feed newsActionType={NewsActionType.ADD} fetchNews={fetchMainFeedPageNews} />
+                    </Content>
+                </Layout>
             </Layout>
         </>
     );

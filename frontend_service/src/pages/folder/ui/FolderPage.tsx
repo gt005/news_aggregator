@@ -1,4 +1,5 @@
-import { Folder, NewsActionType } from "@/shared/model/types"
+import { Folder } from "@/shared/model/types/folders"
+import { NewsActionType } from "@/shared/model/types/news"
 import { Feed } from '@/widgets/feed'
 import Title from "@/shared/ui/Title"
 import { FC, useEffect, useState } from "react"

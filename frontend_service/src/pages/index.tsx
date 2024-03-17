@@ -11,6 +11,7 @@ const Routing = () => {
                 <Routes>
                     <Route path="/" element={<FeedPage />} />
                     <Route path="/folder/:folderId" element={<FolderPage />} />
+                    {/* <Route path="/profile" element={<ProfilePage />} /> */}
                 </Routes>
             </Suspense>
         </Router>

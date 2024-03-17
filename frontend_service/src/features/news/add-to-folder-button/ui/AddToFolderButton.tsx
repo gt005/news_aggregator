@@ -1,6 +1,6 @@
 import { type FC } from "react";
 
-import { INews } from "@/shared/model/types";
+import { INews } from "@/shared/model/types/news";
 import styles from '@/shared/ui/styles/corner-buttons/cornerButton.module.sass'
 import { AddToFolderIcon } from "@/shared/ui/icons";
 

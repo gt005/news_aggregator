@@ -1,11 +1,12 @@
 import axios from 'axios';
-import { FetchNewsListResult, Folder } from "@/shared/model/types";
+import { Folder } from "@/shared/model/types/folders";
+import { FetchNewsListResult } from '@/shared/model/types/news';
 import { serverUrl } from '@/shared/const';
 
 
 export const fetchFolderNews = async (folderId: string, page: number): Promise<FetchNewsListResult> => {
     const response = await axios.get(
-        `/folder/${folderId}/news?page=${page}`,
+        `/api/v1/folders/${folderId}/news?page=${page}`,
         { baseURL: serverUrl }
     );
 
