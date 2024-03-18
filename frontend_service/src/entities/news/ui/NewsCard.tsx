@@ -28,7 +28,7 @@ export const NewsCard: FC<NewsCardProps> = ({ news, ActionButton, isLoading }) =
                 </a>
                 <div className={styles['news-card__container__article-text']}>
                     <h3 className="news-title">{news!.title}</h3>
-                    <p className="news-summary">{news!.description}</p>
+                    <p className={styles['news-summary']}>{news!.description}</p>
                 </div>
                 <div className={styles['news-card__container__date-time-block']}>
                     <span className="news-time">{getFormattedTime(new Date(news!.published_at))}</span>

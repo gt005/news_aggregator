@@ -152,7 +152,6 @@ export const RegistrationModal: FC = () => {
 
             <Modal title="Подтвердите почту" open={isOtpCodeConfirmationOpen} footer={null} onCancel={() => setIsOtpCodeConfirmationOpen(false)}>
                 <p>На вашу почту отправлено письмо с кодом подтверждения</p>
-                    
 
                 <Form
                     form={form}

@@ -26,6 +26,28 @@ export const fetchFolderById = async (folder_id: string): Promise<Folder> => {
     return response.data;
 }
 
+export const fetchMyFolders = async (): Promise<Folder[]> => {
+    const jwtToken = getJwtToken();
+
+    if (!jwtToken) {
+        throw new Error('No token found');
+    }
+
+    const response = await axios.get(
+        `/api/v1/folders/`,
+        {
+            baseURL: serverUrl,
+            headers: { Authorization: `Bearer ${jwtToken.access_token}` }
+        }
+    );
+
+    if (response.status !== 200) {
+        throw new Error('Error occurred while fetching folders');
+    }
+
+    return response.data;
+}
+
 export const createFolder = async (title: string): Promise<Folder> => {
     const jwtToken = getJwtToken();
 
@@ -71,4 +93,28 @@ export const fetchFolderNews = async (folderId: string, page: number): Promise<F
     }
 
     return response.data;
+}
+
+
+export const addNewsToFolder = async (folderId: string, newsId: string): Promise<void> => {
+    const jwtToken = getJwtToken();
+
+    if (!jwtToken) {
+        throw new Error('No token found');
+    }
+
+    const response = await axios.post(
+        `/api/v1/folders/${folderId}/add-news/${newsId}`,
+        {
+            news_id: newsId,
+        },
+        {
+            baseURL: serverUrl,
+            headers: { Authorization: `Bearer ${jwtToken.access_token}` }
+        }
+    );
+
+    if (response.status !== 204) {
+        throw new Error('Error occurred while fetching folders');
+    }
 }
