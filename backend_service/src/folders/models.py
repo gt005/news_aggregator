@@ -12,13 +12,14 @@ class FolderModel(BaseMixin):
     user_id: Mapped[UUID] = mapped_column(ForeignKey('users.id'))
     folder_news: Mapped[list['FolderNewsModels']] = relationship(
         'FolderNewsModels',
-        back_populates='folder'
+        back_populates='folder',
+        cascade='all, delete-orphan'
     )
 
 
 class FolderNewsModels(BaseMixin):
     __tablename__ = 'folder_news'
-    folder_id: Mapped[UUID] = mapped_column(ForeignKey('folders.id'))
+    folder_id: Mapped[UUID] = mapped_column(ForeignKey('folders.id', ondelete='CASCADE'))
     news_id: Mapped[UUID] = mapped_column(ForeignKey('news.id'))
     folder = relationship('FolderModel', back_populates='folder_news')
     news = relationship('NewsModel', back_populates='news_folders')
