@@ -49,7 +49,10 @@ export const Feed: FC<FeedProps> = ({ newsActionType, folder, fetchNews }) => {
                 <>
                     {newsList.length > 0 ? (
                         newsList.map(news => (
-                            <NewsCard key={news.id} folder={folder} news={news} ActionButton={ActionButton} isLoading={isInitialLoading} />
+                            <div key={news.id} className={styles.newsCardBlock}>
+                                <NewsCard folder={folder} news={news} ActionButton={ActionButton} isLoading={isInitialLoading} />
+                                
+                            </div>
                         ))
                     ) : (
                         <div className={styles.emptyFeed}>В ленте пусто</div>

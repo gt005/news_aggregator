@@ -1,0 +1,1 @@
+export { NewsChartModal } from './ui/NewsChartModal';

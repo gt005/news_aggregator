@@ -4,7 +4,6 @@ import { Feed } from '@/widgets/feed'
 import { fetchMainFeedPageNews } from '../api/fetchers';
 import { Layout } from 'antd';
 import { NavigationSider } from '@/widgets/navigationSider';
-import styles from './FeedPage.module.sass'
 
 
 const { Sider, Content } = Layout;
@@ -18,7 +17,7 @@ export const FeedPage = () => {
                 <NavigationSider  />
                 <Layout>
                     <Content>
-                        <Feed newsActionType={NewsActionType.ADD} fetchNews={fetchMainFeedPageNews} />
+                        <Feed folder={null} newsActionType={NewsActionType.ADD} fetchNews={fetchMainFeedPageNews} />
                     </Content>
                 </Layout>
             </Layout>
