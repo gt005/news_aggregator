@@ -5,12 +5,14 @@ import styles from '@/shared/ui/styles/corner-buttons/cornerButton.module.sass'
 import { AddToFolderIcon } from "@/shared/ui/icons";
 import { Modal } from "antd";
 import { AddToFolderModalContent } from "@/features/addToFolderModalContent";
+import { Folder } from "@/shared/model/types/folders";
 
 interface AddToFolderButtonProps {
     news: INews;
+    folder: Folder | null;
 }
 
-export const AddToFolderCornerButton: FC<AddToFolderButtonProps> = ({ news }) => {
+export const AddToFolderCornerButton: FC<AddToFolderButtonProps> = ({ news, folder }) => {
     const [isAddToFolderModalOpen, setIsAddToFolderModalOpen] = useState(false);
 
     return (

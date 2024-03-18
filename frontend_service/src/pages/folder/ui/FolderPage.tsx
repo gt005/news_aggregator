@@ -46,7 +46,7 @@ export const FolderPage: FC = () => {
             <Layout hasSider>
                 <NavigationSider />
                 <Content>
-                    <Feed newsActionType={NewsActionType.REMOVE} fetchNews={fetchFolderNews.bind(null, folder!.id)} />
+                    <Feed newsActionType={NewsActionType.REMOVE} folder={folder} fetchNews={fetchFolderNews.bind(null, folder!.id)} />
                 </Content>
             </Layout>
         </>
