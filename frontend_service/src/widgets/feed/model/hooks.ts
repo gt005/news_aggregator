@@ -1,6 +1,5 @@
-import { FetchNewsListResult, INews } from '@/shared/model/types';
+import { FetchNewsListResult, INews } from '@/shared/model/types/news';
 import { useState, useEffect } from 'react';
-
 
 
 const useNewsFeed = (fetchNews: (page: number) => Promise<FetchNewsListResult>) => {

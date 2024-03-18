@@ -7,7 +7,7 @@ from src.auth.authorization.services.auth_token.command import AuthorizationToke
 from src.auth.authorization.services.auth_token.query import AuthorizationTokenQuery
 from src.auth.authorization.services.jwt.command import JWTCommand
 from src.common.dependencies import get_header_token_string, get_repository
-from src.common.exceptions import IncorrectHeaderTokenSchema
+from src.common.exceptions import IncorrectHeaderTokenSchema, Unauthorized
 from src.users.services.command import UserCommand
 from src.users.services.query import UserQuery
 
@@ -46,6 +46,6 @@ async def login(
         login_user_schema.password,
         user.hashed_password
     ):
-        raise IncorrectHeaderTokenSchema()
+        raise Unauthorized()
 
     return JWTCommand().create(user_id=user.id)

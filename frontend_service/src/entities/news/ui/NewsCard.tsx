@@ -1,5 +1,5 @@
 import React, { ReactElement, FC } from 'react';
-import { INews } from '@/shared/model/types';
+import { INews } from '@/shared/model/types/news';
 import { getFormattedTime, getFormattedDate } from '@/shared/lib/time-utils';
 import styles from './NewsCard.module.sass';
 import { Skeleton } from 'antd';
@@ -12,7 +12,7 @@ interface NewsCardProps {
 }
 
 export const NewsCard: FC<NewsCardProps> = ({ news, ActionButton, isLoading }) => {
-    if (isLoading) {
+    if (isLoading || news === null) {
         return (
             <div className={styles['news-card']}>
                 <Skeleton active />
@@ -28,7 +28,7 @@ export const NewsCard: FC<NewsCardProps> = ({ news, ActionButton, isLoading }) =
                 </a>
                 <div className={styles['news-card__container__article-text']}>
                     <h3 className="news-title">{news!.title}</h3>
-                    <p className="news-summary">{news!.description}</p>
+                    <p className={styles['news-summary']}>{news!.description}</p>
                 </div>
                 <div className={styles['news-card__container__date-time-block']}>
                     <span className="news-time">{getFormattedTime(new Date(news!.published_at))}</span>

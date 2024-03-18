@@ -22,7 +22,7 @@ services:
     volumes:
       - news_aggregator_db_data:/var/lib/postgresql/data
     ports:
-      - "5432:5432"
+      - "5432"
   
   db_test:
     container_name: news_aggregator_db_test
