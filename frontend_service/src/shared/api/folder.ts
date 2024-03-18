@@ -81,7 +81,7 @@ export const fetchFolderNews = async (folderId: string, page: number): Promise<F
     }
 
     const response = await axios.get(
-        `/api/v1/folders/${folderId}/news?page=${page}`,
+        `/api/v1/news/${folderId}/news?page=${page}`,
         {
             baseURL: serverUrl,
             headers: { Authorization: `Bearer ${jwtToken.access_token}` }

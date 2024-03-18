@@ -3,6 +3,7 @@ import { Folder } from "@/shared/model/types/folders";
 import { INews } from "@/shared/model/types/news";
 import { Alert, Button, Form, Select, message } from "antd"
 import { FC, useEffect, useState } from "react"
+import styles from './AddToFolderModalContent.module.sass';
 
 
 interface AddToFolderModalContentProps {
@@ -32,7 +33,7 @@ export const AddToFolderModalContent: FC<AddToFolderModalContentProps> = ({ news
             });
         }
         catch (error) {
-            setErorrMessage('Ошибка при добавлении новости в папку');
+            setErorrMessage('Новость уже добавлена в данную папку');
         }
     }
 
@@ -45,7 +46,7 @@ export const AddToFolderModalContent: FC<AddToFolderModalContentProps> = ({ news
     return (
         <>
             {contextHolder}
-            {errorMessage && <Alert message={errorMessage} type="error" />}
+            {errorMessage && <Alert className={styles.alertMessage} type="error" message={errorMessage} />}
             <Form
                 form={form}
                 name="selectFolderForm"

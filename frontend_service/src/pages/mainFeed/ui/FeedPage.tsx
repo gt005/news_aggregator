@@ -17,7 +17,7 @@ export const FeedPage = () => {
             <Layout hasSider>
                 <NavigationSider  />
                 <Layout>
-                    <Content className={styles.container}>
+                    <Content>
                         <Feed newsActionType={NewsActionType.ADD} fetchNews={fetchMainFeedPageNews} />
                     </Content>
                 </Layout>
