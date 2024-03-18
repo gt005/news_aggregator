@@ -118,3 +118,24 @@ export const addNewsToFolder = async (folderId: string, newsId: string): Promise
         throw new Error('Error occurred while fetching folders');
     }
 }
+
+
+export const removeNewsFromFolder = async (folderId: string, newsId: string): Promise<void> => {
+    const jwtToken = getJwtToken();
+
+    if (!jwtToken) {
+        throw new Error('No token found');
+    }
+
+    const response = await axios.delete(
+        `/api/v1/folders/${folderId}/remove-news/${newsId}`,
+        {
+            baseURL: serverUrl,
+            headers: { Authorization: `Bearer ${jwtToken.access_token}` }
+        }
+    );
+
+    if (response.status !== 204) {
+        throw new Error('Error occurred while fetching folders');
+    }
+}

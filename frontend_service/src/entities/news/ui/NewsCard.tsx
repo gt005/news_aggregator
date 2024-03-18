@@ -3,15 +3,17 @@ import { INews } from '@/shared/model/types/news';
 import { getFormattedTime, getFormattedDate } from '@/shared/lib/time-utils';
 import styles from './NewsCard.module.sass';
 import { Skeleton } from 'antd';
+import { Folder } from '@/shared/model/types/folders';
 
 
 interface NewsCardProps {
     news: INews | null; // news может быть null, если данные еще загружаются
-    ActionButton: React.ComponentType<{ news: INews }> | null;
+    folder: Folder | null;
+    ActionButton: React.ComponentType<{ folder: Folder | null, news: INews }> | null;
     isLoading: boolean;
 }
 
-export const NewsCard: FC<NewsCardProps> = ({ news, ActionButton, isLoading }) => {
+export const NewsCard: FC<NewsCardProps> = ({ news, folder, ActionButton, isLoading }) => {
     if (isLoading || news === null) {
         return (
             <div className={styles['news-card']}>
@@ -35,7 +37,7 @@ export const NewsCard: FC<NewsCardProps> = ({ news, ActionButton, isLoading }) =
                     <span className="news-date">{getFormattedDate(new Date(news!.published_at))}</span>
                 </div>
             </div>
-            {ActionButton && <ActionButton news={news!} />}
+            {ActionButton && <ActionButton folder={folder} news={news!} />}
         </div>
     );
 }

@@ -1,0 +1,1 @@
+export { RemoveFromFolderModalContent } from './ui/RemoveFromFolderModalContent';
