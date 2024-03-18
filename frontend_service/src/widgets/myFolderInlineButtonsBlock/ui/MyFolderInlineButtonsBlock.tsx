@@ -50,8 +50,6 @@ export const MyFolderInlineButtonsBlock: FC = () => {
                             {foldersList.map(folder => (
                                 <div key={folder.id} style={{ display: "flex", alignItems: "center" }}>
                                     <FolderInlineButton folder={folder} />
-                                    <FontAwesomeIcon icon={faPencil} style={{ marginLeft: "auto", cursor: "pointer" }} />
-                                    <FontAwesomeIcon icon={faTrash} style={{ marginLeft: "16px", color: "red", cursor: "pointer" }} />
                                 </div>
                             ))}
                         </>
