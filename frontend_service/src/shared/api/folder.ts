@@ -73,6 +73,26 @@ export const createFolder = async (title: string): Promise<Folder> => {
     return response.data;
 }
 
+export const deleteFolder = async (folderId: string): Promise<void> => {
+    const jwtToken = getJwtToken();
+
+    if (!jwtToken) {
+        throw new Error('No token found');
+    }
+
+    const response = await axios.delete(
+        `/api/v1/folders/${folderId}`,
+        {
+            baseURL: serverUrl,
+            headers: { Authorization: `Bearer ${jwtToken.access_token}` }
+        }
+    );
+
+    if (response.status !== 204) {
+        throw new Error('Error occurred while fetching folders');
+    }
+}
+
 export const fetchFolderNews = async (folderId: string, page: number): Promise<FetchNewsListResult> => {
     const jwtToken = getJwtToken();
 
