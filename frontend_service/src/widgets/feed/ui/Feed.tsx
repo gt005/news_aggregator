@@ -1,4 +1,4 @@
-import { type FC } from 'react';
+import { useState, type FC } from 'react';
 
 import { NewsCard } from '@/entities/news'
 import styles from './Feed.module.sass';
@@ -9,6 +9,8 @@ import { useInView } from 'react-intersection-observer';
 import { NewsActionType, FetchNewsListResult } from '@/shared/model/types/news';
 import useNewsFeed from '../model/hooks';
 import { Folder } from '@/shared/model/types/folders';
+import { getCurrentUser } from '@/shared/lib/storage/user';
+import { User } from '@/shared/model/types/users';
 
 interface FeedProps {
     newsActionType: NewsActionType | null
@@ -17,17 +19,24 @@ interface FeedProps {
 }
 
 export const Feed: FC<FeedProps> = ({ newsActionType, folder, fetchNews }) => {
+    const [user, setUser] = useState<User | null>(null);
     const { newsList, isInitialLoading, hasNextPage, loadNews } = useNewsFeed(fetchNews);
     const { ref, inView } = useInView();
-
-    const ActionButton = newsActionType === NewsActionType.ADD
+    
+    let ActionButton = newsActionType === NewsActionType.ADD
         ? AddToFolderButton
         : newsActionType === NewsActionType.REMOVE
             ? RemoveFromFolderButton
             : null;
+    
+    if (!user) {
+        ActionButton = null;
+    }
 
     useEffect(() => {
         if (inView) loadNews();
+        const user = getCurrentUser();
+        setUser(user);
     }, [inView]);
 
     return (
