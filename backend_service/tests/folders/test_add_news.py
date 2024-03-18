@@ -52,3 +52,14 @@ async def test_not_found_news(
 
     assert response.status_code == 404
     assert response.json() == {"detail": "Not found"}
+
+
+async def test_already_added_news(
+    auth_client: AsyncClient,
+    folder: FolderModel,
+    news_in_folder: NewsModel
+):
+    response = await auth_client.post(f"api/v1/folders/{folder.id}/add-news/{news_in_folder.id}")
+
+    assert response.status_code == 409
+    assert response.json() == {"detail": "Folder already contains news"}

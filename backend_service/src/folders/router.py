@@ -7,6 +7,7 @@ from src.common.dependencies import (
     get_repository,
 )
 from src.exceptions import NotFound
+from src.folders.exceptions import FolderAlreadyContainsNews
 from src.folders.schemas import FolderCreateSchema, FolderPublicSchema
 from src.folders.services.command import FolderCommand
 from src.folders.services.query import FolderQuery
@@ -99,6 +100,10 @@ async def add_news_to_folder(
     existed_news = await news_query.get_by_id(id=news_id)
     if not existed_news:
         raise NotFound()
+
+    news_in_folder = await folder_query.get_news_ids_by_folder_id(folder_id=folder_id)
+    if news_id in news_in_folder:
+        raise FolderAlreadyContainsNews()
 
     folder = await folder_command.add_news_to_folder(folder_id=folder_id, news_id=news_id)
 
