@@ -1,4 +1,4 @@
-import { ExchangeAsset } from '@/shared/model/types/exchange_assets';
+import { Candle, ExchangeAsset } from '@/shared/model/types/exchange_assets';
 import { serverUrl } from "@/shared/const";
 import axios from 'axios';
 
@@ -15,7 +15,7 @@ export const getAssetsList = async (): Promise<ExchangeAsset[]> => {
     return response.data;
 }
 
-export const getCandlesByTickerAndDate = async (ticker: string, from: Date, to: Date, interval: string): Promise<any> => {
+export const getCandlesByTickerAndDate = async (ticker: string, from: Date, to: Date, interval: string): Promise<Candle[]> => {
     const response = await axios.get(
         `/api/v1/exchange_assets/assets/${ticker}`,
         {
@@ -30,6 +30,11 @@ export const getCandlesByTickerAndDate = async (ticker: string, from: Date, to: 
 
     if (response.status !== 200) {
         throw new Error('Error occurred while fetching user');
+    }
+
+    for (let i = 0; i < response.data.length; i++) {
+        response.data[i].begin = new Date(response.data[i].begin);
+        response.data[i].end = new Date(response.data[i].end);
     }
 
     return response.data;

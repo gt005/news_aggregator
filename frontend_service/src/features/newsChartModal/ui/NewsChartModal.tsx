@@ -5,7 +5,8 @@ import { FC, useEffect, useState } from "react";
 import styles from './NewsChartModal.module.sass';
 import { Button, Form, Modal, Select } from "antd";
 import { getAssetsList, getCandlesByTickerAndDate } from "@/shared/api/moexApi";
-import { ExchangeAsset } from "@/shared/model/types/exchange_assets";
+import { Candle, ExchangeAsset } from "@/shared/model/types/exchange_assets";
+import { CandlesChart } from "@/entities/candlesChart/ui/CandlesChart";
 
 
 interface NewsChartModalProps {
@@ -20,7 +21,8 @@ export const NewsChartModal: FC<NewsChartModalProps> = ({ news }) => {
     const [form] = Form.useForm();
     const [isChartModalOpen, setIsChartModalOpen] = useState(false);
     const [stockTickerList, setStockTickerList] = useState<ExchangeAsset[]>([]);
-    const [chartData, setChartData] = useState<any[]>([]);
+    const [chartData, setChartData] = useState<Candle[]>([]);
+    const [selectedExchangeAsset, setSelectedExchangeAsset] = useState<ExchangeAsset | null>(null);
 
     useEffect(() => {
         if (!isChartModalOpen) return;
@@ -34,11 +36,23 @@ export const NewsChartModal: FC<NewsChartModalProps> = ({ news }) => {
     const onStockSelectFinish = async () => {
         const formData = form.getFieldsValue();
 
-        const publishedAt = new Date(news.published_at);
-        const thirtyMinutesEarlier = new Date(publishedAt.getTime() - 30 * 60000);
-        const twoHoursLater = new Date(publishedAt.getTime() + 2 * 60 * 60000);
+        const selectedAsset = stockTickerList.find((asset) => asset.ticker === formData.ticker);
+        if (!selectedAsset) return;
+        setSelectedExchangeAsset(selectedAsset);
 
-        const candles = await getCandlesByTickerAndDate(formData.ticker, thirtyMinutesEarlier, twoHoursLater, '5')
+        const publishedAt = new Date(news.published_at);
+        const earlierDate = new Date(publishedAt);
+        earlierDate.setDate(earlierDate.getDate() - 2);
+
+        const laterDate = new Date(publishedAt);
+        laterDate.setDate(laterDate.getDate() + 2);
+
+        const candles = await getCandlesByTickerAndDate(
+            formData.ticker,
+            earlierDate,
+            laterDate,
+            '4h'
+        )
         setChartData(candles);
     }
 
@@ -49,7 +63,7 @@ export const NewsChartModal: FC<NewsChartModalProps> = ({ news }) => {
         <>
             <FontAwesomeIcon icon={faChartLine} className={styles.openChartModalButton} onClick={() => { setIsChartModalOpen(true) }} />
 
-            <Modal width={1000} title="График акции по новости" open={isChartModalOpen} footer={null} onCancel={() => setIsChartModalOpen(false)}>
+            <Modal width={'90%'} title="График акции по новости" open={isChartModalOpen} footer={null} onCancel={() => setIsChartModalOpen(false)}>
                 <Form
                     form={form}
                     name="select"
@@ -84,12 +98,12 @@ export const NewsChartModal: FC<NewsChartModalProps> = ({ news }) => {
                     </Form.Item>
                 </Form>
 
-                <div id="chart-container" style={{ width: '100%', height: '600px' }} >
-                    <ul>
-                        {chartData.map((candle, index) => (
-                            <li key={index}>{candle}</li>
-                        ))}
-                    </ul>
+                <div id="chart-container" style={{ width: '100%', height: '100%' }} >
+                    {
+                        selectedExchangeAsset && chartData.length !== 0 ?
+                            <CandlesChart exchangeAsset={selectedExchangeAsset!} news={news} candles={chartData} />
+                            : <></>
+                    }
                 </div>
             </Modal>
         </>
