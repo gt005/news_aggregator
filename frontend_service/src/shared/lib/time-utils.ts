@@ -22,3 +22,17 @@ export const getFormattedDate = (dateTime: Date): string => {
 
     return `${day} ${month} ${year}`
 }
+
+/**
+ * Форматирует объект Date в строку с датой и временем в формате "Oct 06 14:00".
+ * @param {Date} dateTime - Объект Date, который нужно отформатировать.
+ * @returns {string} Строка с датой и временем в формате "Oct 06 14:00".
+ */
+export const getFormattedDateTime = (dateTime: Date): string => {
+    const months = ["янв", "фев", "мар", "апр", "май", "июн", "июл", "авг", "сен", "окт", "ноя", "дек"]
+    const month = months[dateTime.getMonth()];
+    const day = dateTime.getDate();
+    const hours = dateTime.getHours().toString().padStart(2, '0');
+    const minutes = dateTime.getMinutes().toString().padStart(2, '0');
+    return `${day} ${month} ${hours}:${minutes}`;
+}
