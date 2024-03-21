@@ -1,6 +1,6 @@
 import cheerio from 'cheerio';
 import axios from 'axios';
-import { convertRBCDatetimeToISO } from './services/dateConverter';
+import { convertRBCDatetimeToISO } from './services/dateConverter.js';
 
 
 export class RBCParcer {
@@ -22,7 +22,7 @@ export class RBCParcer {
         const news_by_request = 10;
         const max_news_amount = 500;  // максимальное количество новостей, доступных для параметра offset, а значит и для парсинга
 
-        for (let i = 0; i < Math.ceil(max_news_amount / news_by_request); i += news_by_request) {
+        for (let i = 0; i < max_news_amount; i += news_by_request) {
             const response = await axios.get(`https://quote.rbc.ru/v5/ajax/get-news-on-main/?limit=${news_by_request}&offset=${i}`);
 
             this._extractNewsFromHtml(response.data.html, lastUpdatedDateTime);
@@ -57,11 +57,13 @@ export class RBCParcer {
             const description = this._getDescriptionFromHtmlBlock(elem, parceFunction);
             const link = this._getLinkFromHtmlBlock(elem, parceFunction);
 
+            console.log(`Parsing article: ${link}`);
             this.articles.push({
                 title: title,
+                url: link,
+                source: 'rbc',
                 description: description,
-                dateTime: dateTime,
-                link: link
+                published_at: dateTime,
             });
         });
     }
@@ -79,13 +81,26 @@ export class RBCParcer {
         */
         const dateText = parceFunction(cheerioBlock).find('.q-item__date__text');
         if (dateText.length === 0) {
-            // TODO: сделать логирование
             console.log('Error: date text not found in block.');
             return null;
         }
-
-        return convertRBCDatetimeToISO(dateText.text().trim());
+    
+        let dateString = dateText.text().trim();
+    
+        // Словарь замен для аббревиатур месяцев
+        const replacements = {
+            'мар': 'март',
+            'апр': 'апр.',
+            'фев': 'февр.',
+        };
+    
+        Object.entries(replacements).forEach(([key, value]) => {
+            dateString = dateString.replace(key, value);
+        });
+    
+        return convertRBCDatetimeToISO(dateString);
     }
+    
 
     _getTitleFromHtmlBlock(cheerioBlock, parceFunction) {
         /*

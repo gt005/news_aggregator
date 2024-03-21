@@ -1,17 +1,17 @@
 import cheerio from 'cheerio';
 import axios from 'axios';
 import { DateTime } from 'luxon';
-import { RBCParcer } from '../parcer';
+import { RBCParcer } from '../parcer.js';
 import testData from './testData/rbcParcerTestData.json';
 import expectedResult from './testData/rbcParcerTestDataRightResult.json';
-import * as dateConverterServices from '../services/dateConverter';
-import { convertRBCDatetimeToISO } from '../services/dateConverter';
-import { timeZone } from '../../const';
+import * as dateConverterServices from '../services/dateConverter.js';
+import { convertRBCDatetimeToISO } from '../services/dateConverter.js';
+import { timeZone } from '../../const.js';
 
 
 jest.mock('axios');
 
-const LAST_UPDATED_DATE = DateTime.fromObject({ year: 2023, month: 10, day: 31, hour: 15, minute: 35}, { zone: timeZone }).toISO()
+const LAST_UPDATED_DATE = DateTime.fromObject({ year: 2023, month: 10, day: 31, hour: 12, minute: 35 }).toISO({ includeOffset: false })
 
 
 describe('RBCParcer', () => {
@@ -136,10 +136,11 @@ describe('RBCParcer', () => {
             parser._extractNewsFromHtml(mockHtml, LAST_UPDATED_DATE);
 
             const expectedArticle = {
-                dateTime: convertRBCDatetimeToISO(testDateTime),
+                published_at: convertRBCDatetimeToISO(testDateTime),
                 title: 'Test Title',
+                source: 'rbc',
                 description: 'Test Description',
-                link: 'https://example.com/test'
+                url: 'https://example.com/test'
             };
             expect(parser.articles).toEqual([expectedArticle]);
         });

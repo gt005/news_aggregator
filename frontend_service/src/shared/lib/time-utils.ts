@@ -1,3 +1,6 @@
+import { DateTime } from 'luxon';
+
+
 /**
  * Форматирует объект Date в строку с временем.
  * @param {Date} dateTime - Объект Date, который нужно отформатировать.
@@ -35,4 +38,15 @@ export const getFormattedDateTime = (dateTime: Date): string => {
     const hours = dateTime.getHours().toString().padStart(2, '0');
     const minutes = dateTime.getMinutes().toString().padStart(2, '0');
     return `${day} ${month} ${hours}:${minutes}`;
+}
+
+/**
+ * Конвертирует дату и время из UTC в московское время.
+ * @param {string} utcDateString - Строка с датой и временем в формате UTC.
+ * @returns {string} Строка с датой и временем в формате московского времени.
+ */
+export function convertUTCToMoscowTimeString(utcDateString: string): string {
+    const utcDate = DateTime.fromISO(utcDateString, { zone: 'utc' });
+    const moscowDate = utcDate.setZone('Europe/Moscow');
+    return moscowDate.toISO({ includeOffset: false })!;
 }

@@ -1,5 +1,5 @@
 import { DateTime } from 'luxon';
-import { timeZone } from '../../const';
+import { timeZone } from '../../const.js';
 
 export function convertRBCDatetimeToISO(dateString) {
     /*
@@ -18,24 +18,24 @@ export function convertRBCDatetimeToISO(dateString) {
         str: дата в ISO формате или null, если дата не валидна
     */
     const fullDatePattern = 'd LLL yyyy, HH:mm';
-    let convertedDate = DateTime.fromFormat(dateString, fullDatePattern, { zone: timeZone, locale: 'ru' });
+    let convertedDate = DateTime.fromFormat(dateString, fullDatePattern, { zone: timeZone, locale: 'ru' }).set({ second: 0, millisecond: 0 });
     if (convertedDate.isValid) {
-        return convertedDate.toISO();
+        return convertedDate.toUTC().toISO({ includeOffset: false });
     }
 
     const partialDatePattern = 'd LLL, HH:mm';
-    convertedDate = DateTime.fromFormat(dateString, partialDatePattern, { zone: timeZone, locale: 'ru' });
+    convertedDate = DateTime.fromFormat(dateString, partialDatePattern, { zone: timeZone, locale: 'ru' }).set({ year: DateTime.local().year, second: 0, millisecond: 0 });
     if (convertedDate.isValid) {
-        convertedDate = convertedDate.set({ year: DateTime.local().year, second: 0, millisecond: 0 });
-        return convertedDate.toISO();
+        return convertedDate.toUTC().toISO({ includeOffset: false });
     }
 
     const timePattern = 'HH:mm';
-    convertedDate = DateTime.fromFormat(dateString, timePattern, { zone: timeZone, locale: 'ru' });
+    convertedDate = DateTime.fromFormat(dateString, timePattern, { zone: timeZone, locale: 'ru' }).set({ second: 0, millisecond: 0 });
     if (convertedDate.isValid) {
         const today = DateTime.now().setZone(timeZone);
-        return today.set({ hour: convertedDate.hour, minute: convertedDate.minute, second: 0, millisecond: 0 }).toISO();
-    }    
+        convertedDate = today.set({ hour: convertedDate.hour, minute: convertedDate.minute, second: 0, millisecond: 0 });
+        return convertedDate.toUTC().toISO({ includeOffset: false });
+    }
 
     console.log(`Error: invalid date format. Get date string: ${dateString}`);
     return null;

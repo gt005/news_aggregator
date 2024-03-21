@@ -1,1 +1,1 @@
-export const serverUrl = 'http://fastapi_backend:8000';
+export const serverUrl = 'http://89.223.121.232';
