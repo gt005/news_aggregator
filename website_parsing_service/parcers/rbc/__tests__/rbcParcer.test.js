@@ -11,7 +11,7 @@ import { timeZone } from '../../const.js';
 
 jest.mock('axios');
 
-const LAST_UPDATED_DATE = DateTime.fromObject({ year: 2023, month: 10, day: 31, hour: 15, minute: 35}, { zone: timeZone }).toISO()
+const LAST_UPDATED_DATE = DateTime.fromObject({ year: 2023, month: 10, day: 31, hour: 12, minute: 35 }).toISO({ includeOffset: false })
 
 
 describe('RBCParcer', () => {
