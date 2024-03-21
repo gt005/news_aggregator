@@ -13,7 +13,7 @@ TEST_DATA = [
         "url": "https://test.ru/",
         "source": str(NewsSource.RBC.value),
         "description": "test description",
-        "published_at": "2022-01-01T00:00:00"
+        "published_at": "2024-03-21T19:39:00"
     },
     {
         "title": "test title 2",

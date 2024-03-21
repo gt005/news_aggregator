@@ -1,6 +1,7 @@
 import axios from 'axios';
-import { FetchNewsListResult } from "@/shared/model/types/news";
+import { FetchNewsListResult, INewsApiSchema } from "@/shared/model/types/news";
 import { serverUrl } from '@/shared/const';
+import { convertUTCToMoscowTimeString } from '@/shared/lib/time-utils';
 
 
 export const fetchMainFeedPageNews = async (page: number): Promise<FetchNewsListResult> => {
@@ -12,5 +13,13 @@ export const fetchMainFeedPageNews = async (page: number): Promise<FetchNewsList
         throw new Error('Failed to fetch news');
     }
 
-    return response.data;
-}
+    const modifiedItems = response.data.items.map((newsItem: INewsApiSchema) => ({
+        ...newsItem,
+        published_at: convertUTCToMoscowTimeString(newsItem.published_at),
+    }));
+
+    return {
+        ...response.data,
+        items: modifiedItems,
+    };
+};

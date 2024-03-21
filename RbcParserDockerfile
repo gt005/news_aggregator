@@ -1,0 +1,11 @@
+FROM node:16
+
+WORKDIR /app
+
+COPY website_parsing_service/package.json website_parsing_service/yarn.lock ./
+
+RUN yarn install
+
+COPY website_parsing_service/. .
+
+CMD [ "node", "main.js" ]

@@ -1,5 +1,5 @@
 import { DateTime } from 'luxon';
-import { timeZone } from '../../../const';
+import { timeZone } from '../../../const.js';
 
 
 export const DATE_STRING_TO_ISO_TESTS = [
@@ -14,5 +14,9 @@ export const DATE_STRING_TO_ISO_TESTS = [
     [
         '15:06',
         DateTime.now().setZone(timeZone).set({ hour: 15, minute: 6, second: 0, millisecond: 0 }).toISO()
+    ],
+    [
+        '20 мар, 22:12',
+        DateTime.fromObject({ year: new Date().getFullYear(), month: 3, day: 20, hour: 22, minute: 12}, { zone: timeZone }).toISO()
     ]
 ];

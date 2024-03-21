@@ -1,5 +1,5 @@
-import { convertRBCDatetimeToISO } from '../dateConverter';
-import { DATE_STRING_TO_ISO_TESTS } from '../test_utils/const';
+import { convertRBCDatetimeToISO } from '../dateConverter.js';
+import { DATE_STRING_TO_ISO_TESTS } from '../test_utils/const.js';
 
 
 describe('test convertRBCDatetimeToISO', () => {

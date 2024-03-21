@@ -7,7 +7,6 @@ from src.users.models import UserModel
 
 class UserCommand(AbstractRepositoryService):
     async def create(self, *, email: str, name: str, password: str) -> User:
-        print(User.hash_password(password), type(User.hash_password(password)))
         user_model = UserModel(
             id=uuid4(),
             email=email,
