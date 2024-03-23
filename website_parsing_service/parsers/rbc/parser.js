@@ -1,15 +1,14 @@
-import cheerio from 'cheerio';
-import axios from 'axios';
-import { convertRBCDatetimeToISO } from './services/dateConverter.js';
+import cheerio from "cheerio";
+import axios from "axios";
+import { convertRBCDatetimeToISO } from "./services/dateConverter.js";
 
-
-export class RBCParcer {
+export class RBCParser {
     constructor() {
         this.articles = [];
-        this.allArticlesHaveBeenParced = false;
+        this.allArticlesHaveBeenParsed = false;
     }
 
-    async makeParceUntilPublicationDateTime(lastUpdatedDateTime) {
+    async makeParseUntilPublicationDateTime(lastUpdatedDateTime) {
         /*
         Парсит новости с сайта РБК.
 
@@ -20,14 +19,16 @@ export class RBCParcer {
             Массив объектов новостей до установленного времени
         */
         const news_by_request = 10;
-        const max_news_amount = 500;  // максимальное количество новостей, доступных для параметра offset, а значит и для парсинга
+        const max_news_amount = 500; // максимальное количество новостей, доступных для параметра offset, а значит и для парсинга
 
         for (let i = 0; i < max_news_amount; i += news_by_request) {
-            const response = await axios.get(`https://quote.rbc.ru/v5/ajax/get-news-on-main/?limit=${news_by_request}&offset=${i}`);
+            const response = await axios.get(
+                `https://quote.rbc.ru/v5/ajax/get-news-on-main/?limit=${news_by_request}&offset=${i}`,
+            );
 
             this._extractNewsFromHtml(response.data.html, lastUpdatedDateTime);
 
-            if (this.allArticlesHaveBeenParced) {
+            if (this.allArticlesHaveBeenParsed) {
                 break;
             }
         }
@@ -43,126 +44,135 @@ export class RBCParcer {
             html (str): html страницы с новостями
             lastUpdatedDateTime (str): дата и время последнего обновления новостей в ISO формате
         */
-        const parceFunction = cheerio.load(html);
+        const parseFunction = cheerio.load(html);
 
-        parceFunction('.q-item').each((idx, elem) => {
-            const dateTime = this._getDateTimeFromHtmlBlock(elem, parceFunction);
+        parseFunction(".q-item").each((idx, elem) => {
+            const dateTime = this._getDateTimeFromHtmlBlock(
+                elem,
+                parseFunction,
+            );
 
             if (new Date(dateTime) <= new Date(lastUpdatedDateTime)) {
-                this.allArticlesHaveBeenParced = true;
+                this.allArticlesHaveBeenParsed = true;
                 return;
             }
 
-            const title = this._getTitleFromHtmlBlock(elem, parceFunction);
-            const description = this._getDescriptionFromHtmlBlock(elem, parceFunction);
-            const link = this._getLinkFromHtmlBlock(elem, parceFunction);
+            const title = this._getTitleFromHtmlBlock(elem, parseFunction);
+            const description = this._getDescriptionFromHtmlBlock(
+                elem,
+                parseFunction,
+            );
+            const link = this._getLinkFromHtmlBlock(elem, parseFunction);
 
             console.log(`Parsing article: ${link}`);
             this.articles.push({
                 title: title,
                 url: link,
-                source: 'rbc',
+                source: "rbc",
                 description: description,
                 published_at: dateTime,
             });
         });
     }
 
-    _getDateTimeFromHtmlBlock(cheerioBlock, parceFunction) {
+    _getDateTimeFromHtmlBlock(cheerioBlock, parseFunction) {
         /*
         Возвращает дату и время новости, полученные из html блока.
 
         Args:
             cheerioBlock (Cheerio): блок с новостью
-            parceFunction (function): функция парсинга
+            parseFunction (function): функция парсинга
 
         Returns:
             str: дата и время новости в ISO формате или null, если дата и время не найдены
-        */
-        const dateText = parceFunction(cheerioBlock).find('.q-item__date__text');
+    */
+        const dateText = parseFunction(cheerioBlock).find(
+            ".q-item__date__text",
+        );
         if (dateText.length === 0) {
-            console.log('Error: date text not found in block.');
+            console.log("Error: date text not found in block.");
             return null;
         }
-    
+
         let dateString = dateText.text().trim();
-    
+
         // Словарь замен для аббревиатур месяцев
         const replacements = {
-            'мар': 'март',
-            'апр': 'апр.',
-            'фев': 'февр.',
+            мар: "март",
+            апр: "апр.",
+            фев: "февр.",
         };
-    
+
         Object.entries(replacements).forEach(([key, value]) => {
             dateString = dateString.replace(key, value);
         });
-    
+
         return convertRBCDatetimeToISO(dateString);
     }
-    
 
-    _getTitleFromHtmlBlock(cheerioBlock, parceFunction) {
+    _getTitleFromHtmlBlock(cheerioBlock, parseFunction) {
         /*
         Возвращает заголовок новости, полученный из html блока.
 
         Args:
             cheerioBlock (Cheerio): блок с новостью
-            parceFunction (function): функция парсинга
+            parseFunction (function): функция парсинга
 
         Returns:
             str: заголовок новости или null, если заголовок не найден
         */
-        const title = parceFunction(cheerioBlock).find('.q-item__title');
+        const title = parseFunction(cheerioBlock).find(".q-item__title");
         if (title.length === 0) {
             // TODO: сделать логирование
-            console.log('Error: title not found in block.');
+            console.log("Error: title not found in block.");
             return null;
         }
 
         return title.text().trim();
     }
 
-    _getDescriptionFromHtmlBlock(cheerioBlock, parceFunction) {
+    _getDescriptionFromHtmlBlock(cheerioBlock, parseFunction) {
         /*
         Возвращает описание новости, полученное из html блока.
 
         Args:
             cheerioBlock (Cheerio): блок с новостью
-            parceFunction (function): функция парсинга
+            parseFunction (function): функция парсинга
 
         Returns:
             str: описание новости или null, если описание не найдено
         */
         // TODO: сделать логирование, если не найден блок с описанием
-        const description = parceFunction(cheerioBlock).find('.q-item__description');
+        const description = parseFunction(cheerioBlock).find(
+            ".q-item__description",
+        );
         if (description.length === 0) {
             // TODO: сделать логирование
-            console.log('Error: description not found in block.');
+            console.log("Error: description not found in block.");
             return null;
         }
 
         return description.text().trim();
     }
 
-    _getLinkFromHtmlBlock(cheerioBlock, parceFunction) {
+    _getLinkFromHtmlBlock(cheerioBlock, parseFunction) {
         /*
         Возвращает ссылку на новость, полученную из html блока.
 
         Args:
             cheerioBlock (Cheerio): блок с новостью
-            parceFunction (function): функция парсинга
+            parseFunction (function): функция парсинга
 
         Returns:
             str: ссылка на новость или null, если ссылка не найдена
         */
-        const link = parceFunction(cheerioBlock).find('.q-item__link');
+        const link = parseFunction(cheerioBlock).find(".q-item__link");
         if (link.length === 0) {
             // TODO: сделать логирование
-            console.log('Error: link not found in block.');
+            console.log("Error: link not found in block.");
             return null;
         }
 
-        return link.attr('href').trim();
+        return link.attr("href").trim();
     }
 }

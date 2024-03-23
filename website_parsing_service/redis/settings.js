@@ -1,9 +1,10 @@
 import { createClient } from "redis";
+import { redisHost, redisPort } from "./const.js";
 
 export const client = createClient({
     socket: {
-        host: "redis",
-        port: 6379,
+        host: redisHost,
+        port: redisPort,
     },
 });
 

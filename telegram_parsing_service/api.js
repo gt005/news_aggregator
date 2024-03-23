@@ -25,7 +25,7 @@ export const sendParsedNewsToBackendServer = async (articles) => {
         if (error.response && error.response.status === 500) {
             console.log("Server error:", error.message);
         } else {
-            console.log("Error sending data:", error.message);
+            console.log("Error sending data:", error.response.data);
         }
     }
 };

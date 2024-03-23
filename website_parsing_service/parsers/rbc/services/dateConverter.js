@@ -1,5 +1,5 @@
-import { DateTime } from 'luxon';
-import { timeZone } from '../../const.js';
+import { DateTime } from "luxon";
+import { timeZone } from "../../const.js";
 
 export function convertRBCDatetimeToISO(dateString) {
     /*
@@ -17,23 +17,37 @@ export function convertRBCDatetimeToISO(dateString) {
     Returns:
         str: дата в ISO формате или null, если дата не валидна
     */
-    const fullDatePattern = 'd LLL yyyy, HH:mm';
-    let convertedDate = DateTime.fromFormat(dateString, fullDatePattern, { zone: timeZone, locale: 'ru' }).set({ second: 0, millisecond: 0 });
+    const fullDatePattern = "d LLL yyyy, HH:mm";
+    let convertedDate = DateTime.fromFormat(dateString, fullDatePattern, {
+        zone: timeZone,
+        locale: "ru",
+    }).set({ second: 0, millisecond: 0 });
     if (convertedDate.isValid) {
         return convertedDate.toUTC().toISO({ includeOffset: false });
     }
 
-    const partialDatePattern = 'd LLL, HH:mm';
-    convertedDate = DateTime.fromFormat(dateString, partialDatePattern, { zone: timeZone, locale: 'ru' }).set({ year: DateTime.local().year, second: 0, millisecond: 0 });
+    const partialDatePattern = "d LLL, HH:mm";
+    convertedDate = DateTime.fromFormat(dateString, partialDatePattern, {
+        zone: timeZone,
+        locale: "ru",
+    }).set({ year: DateTime.local().year, second: 0, millisecond: 0 });
     if (convertedDate.isValid) {
         return convertedDate.toUTC().toISO({ includeOffset: false });
     }
 
-    const timePattern = 'HH:mm';
-    convertedDate = DateTime.fromFormat(dateString, timePattern, { zone: timeZone, locale: 'ru' }).set({ second: 0, millisecond: 0 });
+    const timePattern = "HH:mm";
+    convertedDate = DateTime.fromFormat(dateString, timePattern, {
+        zone: timeZone,
+        locale: "ru",
+    }).set({ second: 0, millisecond: 0 });
     if (convertedDate.isValid) {
         const today = DateTime.now().setZone(timeZone);
-        convertedDate = today.set({ hour: convertedDate.hour, minute: convertedDate.minute, second: 0, millisecond: 0 });
+        convertedDate = today.set({
+            hour: convertedDate.hour,
+            minute: convertedDate.minute,
+            second: 0,
+            millisecond: 0,
+        });
         return convertedDate.toUTC().toISO({ includeOffset: false });
     }
 
