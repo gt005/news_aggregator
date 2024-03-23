@@ -19,27 +19,33 @@ export class TelegramParser {
         const command = `snscrape --jsonl --since "${sinceParsingDateString}" telegram-channel ${this.channel}`;
 
         const articles = await new Promise((resolve, reject) => {
-            exec(command, { maxBuffer: 1024 * 1024 * 1024 }, (error, stdout, stderr) => {
-                if (error) {
-                    console.error(`Error executing command: ${error.message}`);
-                    reject(error);
-                    return;
-                }
-                if (stderr) {
-                    console.error(`Command execution error: ${stderr}`);
-                    reject(new Error(stderr));
-                    return;
-                }
+            exec(
+                command,
+                { maxBuffer: 1024 * 1024 * 1024 },
+                (error, stdout, stderr) => {
+                    if (error) {
+                        console.error(
+                            `Error executing command: ${error.message}`,
+                        );
+                        reject(error);
+                        return;
+                    }
+                    if (stderr) {
+                        console.error(`Command execution error: ${stderr}`);
+                        reject(new Error(stderr));
+                        return;
+                    }
 
-                try {
-                    const articles =
-                        this._parseArticlesFromSnscrapeString(stdout);
-                    resolve(articles);
-                } catch (parseError) {
-                    console.error("Error parsing articles:", parseError);
-                    reject(parseError);
-                }
-            });
+                    try {
+                        const articles =
+                            this._parseArticlesFromSnscrapeString(stdout);
+                        resolve(articles);
+                    } catch (parseError) {
+                        console.error("Error parsing articles:", parseError);
+                        reject(parseError);
+                    }
+                },
+            );
         });
 
         return articles;

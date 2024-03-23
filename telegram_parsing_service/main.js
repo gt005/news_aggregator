@@ -14,20 +14,27 @@ schedule.scheduleJob("*/1 * * * *", async function () {
         { channel: "headlines_geo", channelName: "Geo Headlines" },
         { channel: "headlines_for_traders", channelName: "Headlines" },
         { channel: "bitkogan_hotline", channelName: "Bitkogan" },
-        { channel: "tmptmp2", channelName: "Мой канал" }
+        { channel: "tmptmp2", channelName: "Мой канал" },
     ];
 
-    const tasks = telegramChannels.map(channel => {
+    const tasks = telegramChannels.map((channel) => {
         console.log(`Start parsing ${channel.channelName} channel`);
         return (async () => {
-            const parser = new TelegramParser(channel.channel, channel.channelName);
+            const parser = new TelegramParser(
+                channel.channel,
+                channel.channelName,
+            );
             const articles =
-                await parser.makeParseUntilPublicationDateTime(lastUpdatedDateTime);
+                await parser.makeParseUntilPublicationDateTime(
+                    lastUpdatedDateTime,
+                );
 
             if (articles.length > 0) {
                 return sendParsedNewsToBackendServer(
                     articles.filter(
-                        item => item.description !== null && item.description.length > 20,
+                        (item) =>
+                            item.description !== null &&
+                            item.description.length > 20,
                     ),
                 );
             }
@@ -36,5 +43,5 @@ schedule.scheduleJob("*/1 * * * *", async function () {
 
     await Promise.all(tasks);
 
-    await setLastUpdatedDateTime((new Date()).toISOString());
+    await setLastUpdatedDateTime(new Date().toISOString());
 });

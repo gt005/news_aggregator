@@ -1,10 +1,13 @@
 import { client } from "../settings.js";
 import { redisAppName } from "../const.js";
 
-export const setLastUpdatedDateTime = async (redisParsingSourceName, dateTimeString) => {
+export const setLastUpdatedDateTime = async (
+    redisParsingSourceName,
+    dateTimeString,
+) => {
     await client.set(
         `${redisAppName}:${redisParsingSourceName}`,
-        dateTimeString
+        dateTimeString,
     );
 };
 
@@ -15,4 +18,4 @@ export const setApiToken = async (token) => {
         "EX",
         180,
     );
-}
+};

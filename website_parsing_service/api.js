@@ -2,7 +2,6 @@ import axios from "axios";
 import crypto from "crypto";
 import { setApiToken } from "./redis/services/command.js";
 
-
 export const sendParsedNewsToBackendServer = async (articles) => {
     /*
     Отправляет новости на бэкенд сервер.

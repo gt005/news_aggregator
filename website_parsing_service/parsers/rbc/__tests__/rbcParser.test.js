@@ -1,9 +1,9 @@
 import cheerio from "cheerio";
 import axios from "axios";
 import { DateTime } from "luxon";
-import { RBCParcer } from "../parcer.js";
-import testData from "./testData/rbcParcerTestData.json";
-import expectedResult from "./testData/rbcParcerTestDataRightResult.json";
+import { RBCParser } from "../parser.js";
+import testData from "./testData/rbcParserTestData.json";
+import expectedResult from "./testData/rbcParserTestDataRightResult.json";
 import * as dateConverterServices from "../services/dateConverter.js";
 import { convertRBCDatetimeToISO } from "../services/dateConverter.js";
 
@@ -17,11 +17,11 @@ const LAST_UPDATED_DATE = DateTime.fromObject({
     minute: 35,
 }).toISO({ includeOffset: false });
 
-describe("RBCParcer", () => {
+describe("RBCParser", () => {
     let parser;
 
     beforeEach(() => {
-        parser = new RBCParcer();
+        parser = new RBCParser();
     });
 
     describe("Main parsing method", () => {
@@ -33,7 +33,7 @@ describe("RBCParcer", () => {
 
         it("should parse news correctly for the set of data", async () => {
             const result =
-                await parser.makeParceUntilPublicationDateTime(
+                await parser.makeParseUntilPublicationDateTime(
                     LAST_UPDATED_DATE,
                 );
             expect(result).toEqual(expectedResult);
@@ -165,7 +165,7 @@ describe("RBCParcer", () => {
             `;
 
             parser._extractNewsFromHtml(mockHtml, LAST_UPDATED_DATE);
-            expect(parser.allArticlesHaveBeenParced).toBe(true);
+            expect(parser.allArticlesHaveBeenParsed).toBe(true);
             expect(parser.articles).toEqual([]);
         });
     });

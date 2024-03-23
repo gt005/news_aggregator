@@ -6,10 +6,9 @@ import { setLastUpdatedDateTime } from "./redis/services/command.js";
 import { redisParsingSourceName } from "./parsers/const.js";
 import { getLastUpdatedDateObjectFromDateTimeString } from "./utils.js";
 
-
 schedule.scheduleJob("*/2 * * * *", async function () {
     const lastUpdatedDateTime = getLastUpdatedDateObjectFromDateTimeString(
-        await getLastUpdatedDateTime(redisParsingSourceName)
+        await getLastUpdatedDateTime(redisParsingSourceName),
     );
 
     const articles = await new RBCParser().makeParseUntilPublicationDateTime(
@@ -21,5 +20,8 @@ schedule.scheduleJob("*/2 * * * *", async function () {
     }
 
     await sendParsedNewsToBackendServer(articles);
-    await setLastUpdatedDateTime(redisParsingSourceName, articles[0].published_at);
+    await setLastUpdatedDateTime(
+        redisParsingSourceName,
+        articles[0].published_at,
+    );
 });

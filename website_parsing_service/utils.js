@@ -8,4 +8,4 @@ export const getLastUpdatedDateObjectFromDateTimeString = (dateTimeString) => {
     lastUpdatedDateTime = new Date();
     lastUpdatedDateTime.setMonth(lastUpdatedDateTime.getMonth() - 6);
     return lastUpdatedDateTime;
-}
+};
