@@ -11,7 +11,7 @@ app = FastAPI()
 app.add_middleware(
     CORSMiddleware,
     # For dev only TODO: make flags for dev and prod
-    allow_origins=["http://localhost:8000", "http://localhost", "http://89.223.121.232"],
+    allow_origins=["http://localhost:8000", "http://localhost", "http://89.223.121.232", "news-fusion.ru"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
