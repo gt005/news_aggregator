@@ -1,31 +1,31 @@
 {
-  "name": "parsing_service",
-  "version": "1.0.0",
-  "main": "index.js",
-  "license": "MIT",
-  "dependencies": {
-    "axios": "^1.6.0",
-    "cheerio": "^1.0.0-rc.12",
-    "luxon": "^3.4.3",
-    "node-schedule": "^2.1.1",
-    "redis": "^4.6.13"
-  },
-  "type": "module",
-  "_moduleAliases": {
-    "@root": ".",
-    "@": "./utils"
-  },
-  "scripts": {
-    "test": "jest",
-    "format": "prettier --write .",
-    "lint": "eslint ."
-  },
-  "devDependencies": {
-    "@babel/core": "^7.23.2",
-    "@babel/preset-env": "^7.23.2",
-    "babel-jest": "^29.7.0",
-    "eslint": ">=5.16.0",
-    "jest": "^29.7.0",
-    "prettier": "^3.2.5"
-  }
+    "name": "parsing_service",
+    "version": "1.0.0",
+    "main": "index.js",
+    "license": "MIT",
+    "dependencies": {
+        "axios": "^1.6.0",
+        "cheerio": "^1.0.0-rc.12",
+        "luxon": "^3.4.3",
+        "node-schedule": "^2.1.1",
+        "redis": "^4.6.13"
+    },
+    "type": "module",
+    "_moduleAliases": {
+        "@root": ".",
+        "@": "./utils"
+    },
+    "scripts": {
+        "test": "jest",
+        "format": "prettier --write .",
+        "lint": "eslint ."
+    },
+    "devDependencies": {
+        "@babel/core": "^7.23.2",
+        "@babel/preset-env": "^7.23.2",
+        "babel-jest": "^29.7.0",
+        "eslint": ">=5.16.0",
+        "jest": "^29.7.0",
+        "prettier": "^3.2.5"
+    }
 }
