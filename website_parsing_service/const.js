@@ -1,1 +1,1 @@
-export const redisAppName = 'website_parsing_service';
+export const redisAppName = "website_parsing_service";
