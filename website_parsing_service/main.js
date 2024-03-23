@@ -7,6 +7,9 @@ import { sendParsedNewsToBackendServer } from './api.js';
 
 const job = schedule.scheduleJob('*/30 * * * * *', async function () {
     let lastUpdatedDateTime = await client.get(`${redisAppName}:${redisParsingSourceName}`);
+    lastUpdatedDateTime = new Date(lastUpdatedDateTime);
+    lastUpdatedDateTime.setHours(lastUpdatedDateTime.getHours() + 3);
+    lastUpdatedDateTime = lastUpdatedDateTime.toISOString();
 
     if (!lastUpdatedDateTime) {
         lastUpdatedDateTime = new Date();
@@ -16,13 +19,16 @@ const job = schedule.scheduleJob('*/30 * * * * *', async function () {
     }
 
     const articles = await new RBCParcer().makeParceUntilPublicationDateTime(
-        lastUpdatedDateTime.toISOString()
+        lastUpdatedDateTime
     );
 
-    await client.set(
-        `${redisAppName}:${redisParsingSourceName}`,
-        new Date().toISOString()
-    );
+    if (articles.length !== 0) {
+        await client.set(
+            `${redisAppName}:${redisParsingSourceName}`,
+            articles[0].published_at
+        );
+    }
+
 
     if (articles.length === 0) {
         return;

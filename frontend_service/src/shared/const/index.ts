@@ -1,1 +1,1 @@
-export const serverUrl = 'http://89.223.121.232';
+export const serverUrl = 'http://news-fusion.ru';
