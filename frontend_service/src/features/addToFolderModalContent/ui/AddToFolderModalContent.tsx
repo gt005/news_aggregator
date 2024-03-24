@@ -72,7 +72,8 @@ export const AddToFolderModalContent: FC<AddToFolderModalContentProps> = ({ news
                         ))}
                     </Select>
                 </Form.Item>
-                <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
+
+                <Form.Item className={styles.submitButtonItem}>
                     <Button type="primary" htmlType="submit">
                         Добавить
                     </Button>

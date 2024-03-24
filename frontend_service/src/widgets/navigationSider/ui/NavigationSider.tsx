@@ -56,13 +56,13 @@ export const NavigationSider: FC = () => {
                     {isLoginModalVisible && (
                         <>
                             <LoginModal />
-                            <Button className={styles.centeredButton} type="text" onClick={() => { setIsRegisterModalVisible(true); setIsLoginModalVisible(false) }}>Зарегистрироваться</Button>
+                            <Button className={styles.centeredButton} type="text" onClick={() => { setIsRegisterModalVisible(true); setIsLoginModalVisible(false) }}>Нет аккаунта? Зарегистрироваться</Button>
                         </>
                     )}
                     {isRegisterModalVisible && (
                         <>
                             <RegistrationModal />
-                            <Button className={styles.centeredButton} type="text" onClick={() => { setIsLoginModalVisible(true); setIsRegisterModalVisible(false) }}>Войти</Button>
+                            <Button className={styles.centeredButton} type="text" onClick={() => { setIsLoginModalVisible(true); setIsRegisterModalVisible(false) }}>Есть аккаунт? Войти</Button>
                         </>
                     )}
                 </div>

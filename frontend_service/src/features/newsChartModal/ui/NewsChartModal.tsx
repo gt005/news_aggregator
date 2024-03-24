@@ -93,7 +93,8 @@ export const NewsChartModal: FC<NewsChartModalProps> = ({ news }) => {
                             options={stockTickerList.map((asset) => ({ label: `${asset.ticker} (${asset.name})`, value: asset.ticker }))}
                         />
                     </Form.Item>
-                    <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
+
+                    <Form.Item className={styles.submitButtonItem}>
                         <Button type="primary" htmlType="submit">
                             Добавить
                         </Button>

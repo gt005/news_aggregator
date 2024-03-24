@@ -68,7 +68,7 @@ export const LoginModal: FC = () => {
                     <Input.Password />
                 </Form.Item>
 
-                <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
+                <Form.Item className={styles.submitButtonItem}>
                     <Button type="primary" htmlType="submit">
                         Войти
                     </Button>

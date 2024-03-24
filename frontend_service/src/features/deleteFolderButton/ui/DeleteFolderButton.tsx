@@ -58,7 +58,7 @@ export const DeleteFolderButton: FC<DeleteFolderButtonProps> = ({ folder }) => {
                     initialValues={{ remember: true }}
                     onFinish={onFolderDeleteFinish}
                 >
-                    <Form.Item wrapperCol={{ offset: 8, span: 16 }} className={styles.removeButton}>
+                    <Form.Item className={styles.removeButton}>
                         <Button danger type="primary" htmlType="submit" disabled={isFolderDeleteButtonDisabled}>
                             Удалить
                         </Button>
