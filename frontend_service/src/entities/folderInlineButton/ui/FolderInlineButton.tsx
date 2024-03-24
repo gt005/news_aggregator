@@ -17,7 +17,7 @@ export const FolderInlineButton: FC<FolderInlineButtonProps> = ({ folder }) => {
             <Link className={styles.container} to={`/folder/${folder.id}`}>
                 <div className={styles.title}>{folder.title}</div>
             </Link>
-            <FontAwesomeIcon icon={faPencil} style={{ marginLeft: "auto", cursor: "pointer" }} />
+            {/* <FontAwesomeIcon icon={faPencil} style={{ marginLeft: "auto", cursor: "pointer" }} /> */}
             <DeleteFolderButton folder={folder} />
         </>
     )

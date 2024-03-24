@@ -61,7 +61,9 @@ export const NewsChartModal: FC<NewsChartModalProps> = ({ news }) => {
 
     return (
         <>
-            <FontAwesomeIcon icon={faChartLine} className={styles.openChartModalButton} onClick={() => { setIsChartModalOpen(true) }} />
+            <div className={styles.iconWrapper} onClick={() => { setIsChartModalOpen(true) }}>
+                <FontAwesomeIcon icon={faChartLine} className={styles.openChartModalButton} />
+            </div>
 
             <Modal width={'90%'} title="График акции по новости" open={isChartModalOpen} footer={null} onCancel={() => setIsChartModalOpen(false)}>
                 <Form

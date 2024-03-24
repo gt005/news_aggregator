@@ -1,13 +1,21 @@
-.openChartModalButton
-    font-size: 16px
-    color: #fff
-    cursor: pointer
+.iconWrapper
+    display: inline-block
     border: 1px solid #222F38
-    background: #222F38
-    padding: 10px
     border-radius: 110px
+    padding: 10px
+    background: #222F38
+    cursor: pointer
     transition: 0.3s
 
     &:hover
         background: transparent
-        color: #222F38
+
+        & .openChartModalButton
+            color: #222F38
+
+    .openChartModalButton
+        font-size: 16px
+        color: #fff
+        display: inline-block
+        transition: 0.3s
+        background-clip: padding-box
