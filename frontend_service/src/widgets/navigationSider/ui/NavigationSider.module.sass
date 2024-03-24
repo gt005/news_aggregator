@@ -9,6 +9,7 @@
     max-width: 20% !important
     min-width: 280px !important
     padding: 24px
+    transition: width 0.3s ease-out
     z-index: 1
 
 @media (max-width: 991px)
@@ -17,11 +18,14 @@
         max-width: 70% !important
         min-width: 0 !important
     
+    .collapsedSider
+        padding: 0
+        width: 0% !important
+        max-width: 0% !important
+        transition: width 0.3s ease-out
 
-.collapsedSider
-    padding: 0
-    width: 0% !important
-    max-width: 0% !important
+    .collapsedSiderContent
+        display: none
 
 .mainFeedLink
     margin-top: 50px

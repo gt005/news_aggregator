@@ -13,7 +13,8 @@ export const NavigationSider: FC = () => {
     const [user, setUser] = useState<User | null>(null);
     const [isLoginModalVisible, setIsLoginModalVisible] = useState(false);
     const [isRegisterModalVisible, setIsRegisterModalVisible] = useState(false);
-    const [isCollapsed, setIsCollapsed] = useState(false);
+    const [isCollapsed, setIsCollapsed] = useState(true);
+    const [isCollapsedContentHidden, setIsCollapsedContentHidden] = useState(true);
 
     useEffect(() => {
         const user = getCurrentUser();
@@ -27,10 +28,17 @@ export const NavigationSider: FC = () => {
                 collapsedWidth="0"
                 className={`${styles.siderContainer} ${isCollapsed ? styles.collapsedSider : ''}`}
                 onCollapse={(collapsed) => {
+                    if (!collapsed) {
+                        setTimeout(() => {
+                            setIsCollapsedContentHidden(collapsed);
+                        }, 85);
+                    } else {
+                        setIsCollapsedContentHidden(collapsed);
+                    }
                     setIsCollapsed(collapsed);
                 }}
             >
-                <Flex align="middle" className={styles.flexInsideContainder}>
+                <Flex align="middle" className={`${styles.flexInsideContainder} ${isCollapsedContentHidden ? styles.collapsedSiderContent : ''}`}>
                     {user ? (
                         <>
                             <div className={styles.mainText}>Добрый день, <a className={styles.profileLink} href={`/profile/${user.id}`}>{user.name}</a></div>
