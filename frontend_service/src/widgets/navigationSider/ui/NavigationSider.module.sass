@@ -1,12 +1,27 @@
 .siderContainer
-    overflow: auto
     height: 100vh
     position: fixed !important
     left: 0
     top: 0
     bottom: 0
     color: #fff
+    width: 20% !important
+    max-width: 20% !important
+    min-width: 280px !important
     padding: 24px
+    z-index: 1
+
+@media (max-width: 991px)
+    .siderContainer
+        width: 70% !important
+        max-width: 70% !important
+        min-width: 0 !important
+    
+
+.collapsedSider
+    padding: 0
+    width: 0% !important
+    max-width: 0% !important
 
 .mainFeedLink
     margin-top: 50px
@@ -22,6 +37,7 @@
     justify-content: center
     height: 100%
     overflow: auto
+    overflow-wrap: anywhere
 
 .mainText
     font-size: 24px

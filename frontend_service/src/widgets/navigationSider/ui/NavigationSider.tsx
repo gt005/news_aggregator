@@ -6,7 +6,6 @@ import { User } from "@/shared/model/types/users";
 import styles from './NavigationSider.module.sass'
 import { LoginModal } from "@/widgets/loginModal";
 import { RegistrationModal } from "@/widgets/registrationModal";
-import { Link } from "react-router-dom";
 
 const { Sider, Content } = Layout;
 
@@ -14,6 +13,7 @@ export const NavigationSider: FC = () => {
     const [user, setUser] = useState<User | null>(null);
     const [isLoginModalVisible, setIsLoginModalVisible] = useState(false);
     const [isRegisterModalVisible, setIsRegisterModalVisible] = useState(false);
+    const [isCollapsed, setIsCollapsed] = useState(false);
 
     useEffect(() => {
         const user = getCurrentUser();
@@ -23,10 +23,12 @@ export const NavigationSider: FC = () => {
     return (
         <>
             <Sider
-                width="20%"
                 breakpoint="lg"
                 collapsedWidth="0"
-                className={styles.siderContainer}
+                className={`${styles.siderContainer} ${isCollapsed ? styles.collapsedSider : ''}`}
+                onCollapse={(collapsed) => {
+                    setIsCollapsed(collapsed);
+                }}
             >
                 <Flex align="middle" className={styles.flexInsideContainder}>
                     {user ? (
