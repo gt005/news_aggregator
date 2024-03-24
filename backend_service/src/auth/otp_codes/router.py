@@ -1,3 +1,5 @@
+import asyncio
+
 from fastapi import APIRouter
 
 from src.auth.authorization.domain import AuthorizationToken
@@ -19,10 +21,10 @@ async def send_code(
 ) -> None:
     otp_code = await OtpCodeCommand().create_for_email(email=send_otp_code_schema.email)
 
-    await EmailSender.send_otp_code(
+    asyncio.create_task(EmailSender.send_otp_code(
         to_email=otp_code.email,
         code=otp_code.code
-    )
+    ))
 
 
 @otp_codes_v1_router.post("/verify-code")
