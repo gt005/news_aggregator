@@ -1,1 +1,1 @@
-export const serverUrl = 'http://news-fusion.ru';
+export const serverUrl = 'http://localhost';
