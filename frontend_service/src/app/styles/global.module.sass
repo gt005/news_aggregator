@@ -3,6 +3,7 @@
   padding: 0
   border: 0
   font-family: 'Inter', sans-serif
+  // box-shadow: 0 0 0 1px red  // Uses to debug page borders
 
   &:focus, &:active
     outline: none
@@ -10,3 +11,13 @@
 a, a:visited, a:hover
   text-decoration: none
   color: initial
+
+// Uses to not scope on input focus on IOS
+input,
+select,
+textarea,
+button
+  font-size: 16px !important
+
+html
+  width: -webkit-fill-available

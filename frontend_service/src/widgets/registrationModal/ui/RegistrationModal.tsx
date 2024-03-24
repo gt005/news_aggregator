@@ -137,13 +137,13 @@ export const RegistrationModal: FC = () => {
                 <Form.Item<RegistrationFieldsType>
                     name="approve"
                     valuePropName='checked'
-                    wrapperCol={{ offset: 8, span: 16 }}
+                    className={styles.submitButtonItem}
                     rules={[{ required: true, message: 'Подтвердите соглашение' }]}
                 >
                     <Checkbox checked={isDocumentApproved} onChange={(e) => setIsDocumentApproved(e.target.checked)}>Соглашаюсь с <Link className={styles.documentsLink} to="https://example.com">Условиями пользования сервисом</Link></Checkbox>
                 </Form.Item>
 
-                <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
+                <Form.Item className={styles.submitButtonItem}>
                     <Button type="primary" htmlType="submit">
                         Зарегистрироваться
                     </Button>
@@ -175,7 +175,7 @@ export const RegistrationModal: FC = () => {
                     >
                         <Input />
                     </Form.Item>
-                    <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
+                    <Form.Item className={styles.submitButtonItem}>
                         <Button type="primary" htmlType="submit">
                             Подтвердить
                         </Button>

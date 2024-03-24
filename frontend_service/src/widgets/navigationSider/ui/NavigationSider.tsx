@@ -6,7 +6,6 @@ import { User } from "@/shared/model/types/users";
 import styles from './NavigationSider.module.sass'
 import { LoginModal } from "@/widgets/loginModal";
 import { RegistrationModal } from "@/widgets/registrationModal";
-import { Link } from "react-router-dom";
 
 const { Sider, Content } = Layout;
 
@@ -14,6 +13,8 @@ export const NavigationSider: FC = () => {
     const [user, setUser] = useState<User | null>(null);
     const [isLoginModalVisible, setIsLoginModalVisible] = useState(false);
     const [isRegisterModalVisible, setIsRegisterModalVisible] = useState(false);
+    const [isCollapsed, setIsCollapsed] = useState(true);
+    const [isCollapsedContentHidden, setIsCollapsedContentHidden] = useState(true);
 
     useEffect(() => {
         const user = getCurrentUser();
@@ -23,12 +24,21 @@ export const NavigationSider: FC = () => {
     return (
         <>
             <Sider
-                width="20%"
                 breakpoint="lg"
                 collapsedWidth="0"
-                className={styles.siderContainer}
+                className={`${styles.siderContainer} ${isCollapsed ? styles.collapsedSider : ''}`}
+                onCollapse={(collapsed) => {
+                    if (!collapsed) {
+                        setTimeout(() => {
+                            setIsCollapsedContentHidden(collapsed);
+                        }, 85);
+                    } else {
+                        setIsCollapsedContentHidden(collapsed);
+                    }
+                    setIsCollapsed(collapsed);
+                }}
             >
-                <Flex align="middle" className={styles.flexInsideContainder}>
+                <Flex align="middle" className={`${styles.flexInsideContainder} ${isCollapsedContentHidden ? styles.collapsedSiderContent : ''}`}>
                     {user ? (
                         <>
                             <div className={styles.mainText}>Добрый день, <a className={styles.profileLink} href={`/profile/${user.id}`}>{user.name}</a></div>
@@ -54,13 +64,13 @@ export const NavigationSider: FC = () => {
                     {isLoginModalVisible && (
                         <>
                             <LoginModal />
-                            <Button className={styles.centeredButton} type="text" onClick={() => { setIsRegisterModalVisible(true); setIsLoginModalVisible(false) }}>Зарегистрироваться</Button>
+                            <Button className={styles.centeredButton} type="text" onClick={() => { setIsRegisterModalVisible(true); setIsLoginModalVisible(false) }}>Нет аккаунта? Зарегистрироваться</Button>
                         </>
                     )}
                     {isRegisterModalVisible && (
                         <>
                             <RegistrationModal />
-                            <Button className={styles.centeredButton} type="text" onClick={() => { setIsLoginModalVisible(true); setIsRegisterModalVisible(false) }}>Войти</Button>
+                            <Button className={styles.centeredButton} type="text" onClick={() => { setIsLoginModalVisible(true); setIsRegisterModalVisible(false) }}>Есть аккаунт? Войти</Button>
                         </>
                     )}
                 </div>

@@ -57,7 +57,7 @@ export const Feed: FC<FeedProps> = ({ newsActionType, folder, fetchNews }) => {
                     ) : (
                         <div className={styles.emptyFeed}>В ленте пусто</div>
                     )}
-                    {hasNextPage && <div ref={ref}><NewsCard folder={null} news={null} ActionButton={null} isLoading={true} /></div>}
+                    {hasNextPage && <div className={styles.newsCardBlock} ref={ref}><NewsCard folder={null} news={null} ActionButton={null} isLoading={true} /></div>}
                 </>
             )}
         </div>

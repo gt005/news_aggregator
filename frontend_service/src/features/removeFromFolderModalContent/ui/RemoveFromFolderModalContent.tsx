@@ -33,7 +33,7 @@ export const RemoveFromFolderModalContent: FC<RemoveFromFolderModalContentProps>
 
             setTimeout(() => {
                 callback();
-            }, 1300);
+            }, 700);
         }
         catch (error) {
             setErorrMessage('Ошибка удаления из папки');

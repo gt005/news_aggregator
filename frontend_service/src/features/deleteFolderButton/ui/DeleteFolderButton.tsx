@@ -34,7 +34,7 @@ export const DeleteFolderButton: FC<DeleteFolderButtonProps> = ({ folder }) => {
                 } else {
                     navigate('/');
                 }
-            }, 1300);
+            }, 700);
             
         }
         catch (error) {
@@ -44,7 +44,7 @@ export const DeleteFolderButton: FC<DeleteFolderButtonProps> = ({ folder }) => {
     }
 
     return (
-        <>
+        <div style={{ marginLeft: "auto", cursor: "pointer" }}>
             {contextHolder}
             {errorMessage && <Alert className={styles.alertMessage} type="error" message={errorMessage} />}
             <FontAwesomeIcon onClick={() => setIsDeleteModalOpen(true)} icon={faTrash} style={{ marginLeft: "16px", color: "red", cursor: "pointer" }} />
@@ -58,13 +58,13 @@ export const DeleteFolderButton: FC<DeleteFolderButtonProps> = ({ folder }) => {
                     initialValues={{ remember: true }}
                     onFinish={onFolderDeleteFinish}
                 >
-                    <Form.Item wrapperCol={{ offset: 8, span: 16 }} className={styles.removeButton}>
+                    <Form.Item className={styles.removeButton}>
                         <Button danger type="primary" htmlType="submit" disabled={isFolderDeleteButtonDisabled}>
                             Удалить
                         </Button>
                     </Form.Item>
                 </Form>
             </Modal>
-        </>
+        </div>
     )
 }
