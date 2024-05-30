@@ -1,4 +1,4 @@
-name: Fastapi backend CI
+name: backend news data processor CI
 
 on:
   push:
