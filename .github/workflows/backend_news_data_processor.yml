@@ -1,4 +1,4 @@
-name: backend news data processor CI
+name: Backend news data processor CI
 
 on:
   push:

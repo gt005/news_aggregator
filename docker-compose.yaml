@@ -55,6 +55,23 @@ services:
             - db_test
             - redis
 
+    backend_news_data_processor:
+        build:
+            context: .
+            dockerfile: BackendDataProcessorDockerfile
+        restart: always
+        env_file:
+            - backend_news_data_processor/.env
+        ports:
+            - "8002"
+        deploy:
+            mode: replicated
+            replicas: 2
+        depends_on:
+            - db
+            - db_test
+            - redis
+
     frontend_service:
         container_name: news_aggregator_frontend
         build:
