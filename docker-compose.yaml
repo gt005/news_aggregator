@@ -38,7 +38,7 @@ services:
         image: mirror.gcr.io/library/redis:7
         restart: always
         ports:
-            - "6379"
+            - "6379:6379"
 
     fastapi_backend:
         container_name: news_aggregator_fastapi

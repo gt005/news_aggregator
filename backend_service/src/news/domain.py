@@ -20,7 +20,3 @@ class News(BaseModel):
 
     class Config:
         from_attributes = True
-
-
-class NewsHeaderToken(BaseModel):
-    token: str
