@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
     nginx:
-        image: nginx:latest
+        image: mirror.gcr.io/library/nginx:latest
         container_name: news_aggregator_nginx
         ports:
             - "80:80"
@@ -15,30 +15,30 @@ services:
 
     db:
         container_name: news_aggregator_db
-        image: postgres
+        image: mirror.gcr.io/library/postgres:16.3-alpine
         restart: always
         env_file:
             - .database_env
         volumes:
             - news_aggregator_db_data:/var/lib/postgresql/data
         ports:
-            - "5432"
+            - "5432:5432"
 
     db_test:
         container_name: news_aggregator_db_test
-        image: postgres
+        image: mirror.gcr.io/library/postgres:16.3-alpine
         restart: always
         env_file:
             - .database_test_env
         ports:
-            - "5433"
+            - "5433:5432"
 
     redis:
         container_name: news_aggregator_redis
-        image: redis
+        image: mirror.gcr.io/library/redis:7
         restart: always
         ports:
-            - "6379"
+            - "6379:6379"
 
     fastapi_backend:
         container_name: news_aggregator_fastapi
@@ -50,6 +50,23 @@ services:
             - backend_service/.env
         ports:
             - "8000"
+        depends_on:
+            - db
+            - db_test
+            - redis
+
+    backend_news_data_processor:
+        build:
+            context: .
+            dockerfile: BackendDataProcessorDockerfile
+        restart: always
+        env_file:
+            - backend_news_data_processor/.env
+        ports:
+            - "8002"
+        deploy:
+            mode: replicated
+            replicas: 2
         depends_on:
             - db
             - db_test

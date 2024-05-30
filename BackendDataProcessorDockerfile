@@ -1,0 +1,11 @@
+FROM mirror.gcr.io/library/python:3.12
+
+WORKDIR /app
+
+COPY backend_news_data_processor/requirements.txt .
+
+RUN pip install --no-cache-dir -r requirements.txt
+
+COPY backend_news_data_processor/. .
+
+CMD ["sh", "-c", "python main.py"]

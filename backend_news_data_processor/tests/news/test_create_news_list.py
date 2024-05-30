@@ -38,7 +38,7 @@ async def test_valid_case(
     )
 
     response = await client.post(
-        "/api/v1/news/list",
+        "/infra/v1/save-news/list",
         json=TEST_DATA,
         headers={"Authorization": f"Bearer {news_create_token}"}
     )
@@ -67,7 +67,7 @@ async def test_valid_case(
 
 
 async def test_not_token(client: AsyncClient):
-    response = await client.post("/api/v1/news/list", json=TEST_DATA)
+    response = await client.post("/infra/v1/save-news/list", json=TEST_DATA)
 
     assert response.status_code == 403
     assert response.json() == {"detail": "Not authenticated"}
@@ -80,7 +80,7 @@ async def test_not_valid_token(client: AsyncClient, mocker: MockerFixture):
     )
 
     response = await client.post(
-        "/api/v1/news/list",
+        "/infra/v1/save-news/list",
         json=TEST_DATA,
         headers={"Authorization": "Bearer not_valid_token"}
     )
