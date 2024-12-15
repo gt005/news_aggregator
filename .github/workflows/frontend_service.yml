@@ -26,15 +26,23 @@ jobs:
     - name: Run tests (React Service)
       run: yarn test
 
-    - name: Docker login (Docker Hub)
-      if: ${{ success() }}
-      run: echo ${{ secrets.DOCKERHUB_PASSWORD }} | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
+  docker-build-and-push:
+    runs-on: ubuntu-latest
 
-    - name: Build & Push Docker Image
-      if: ${{ success() }}
-      uses: docker/build-push-action@v4
-      with:
-        context: ../..
-        file: ./FrontendDockerfile
-        push: true
-        tags: ${{ secrets.DOCKERHUB_USERNAME }}/news_aggregator_frontend:${{ github.sha }}
+    needs: build-and-test
+
+    if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' && success() }}
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Docker login (Docker Hub)
+        run: echo "${{ secrets.DOCKERHUB_PASSWORD }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
+
+      - name: Build & Push Docker Image
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          file: FrontendDockerfile
+          push: true
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/news_aggregator_frontend:${{ github.sha }}
