@@ -1,4 +1,4 @@
-name: Parcer Services CI
+name: Parser Services CI
 
 on:
   push:
@@ -20,7 +20,7 @@ jobs:
       with:
         node-version: 16
 
-    - name: Install dependencies (Parcer Services)
+    - name: Install dependencies (Parser Services)
       run: yarn install
 
     - name: Check ESLint
@@ -29,5 +29,27 @@ jobs:
     - name: Check Prettier
       run: yarn prettier --check .
 
-    - name: Run tests (Parcer Services)
+    - name: Run tests (Parser Services)
       run: yarn test
+
+    - name: Docker login (Docker Hub)
+      if: ${{ success() }}
+      run: echo ${{ secrets.DOCKERHUB_PASSWORD }} | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
+
+    - name: Build & Push Docker Image (Website parsing)
+      if: ${{ success() }}
+      uses: docker/build-push-action@v4
+      with:
+        context: ../..
+        file: ../RbcParserDockerfile
+        push: true
+        tags: ${{ secrets.DOCKERHUB_USERNAME }}/news_aggregator_website_parser:${{ github.sha }}
+
+    - name: Build & Push Docker Image (Telegram parser)
+      if: ${{ success() }}
+      uses: docker/build-push-action@v4
+      with:
+        context: ../..
+        file: ../TelegramParserDockerfile
+        push: true
+        tags: ${{ secrets.DOCKERHUB_USERNAME }}/news_aggregator_telegram_parser:${{ github.sha }}

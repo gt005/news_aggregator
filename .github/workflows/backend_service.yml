@@ -65,3 +65,16 @@ jobs:
       run: |
         export PYTHONPATH=$(pwd)
         pytest
+
+    - name: Docker login (Docker Hub)
+      if: ${{ success() }}
+      run: echo ${{ secrets.DOCKERHUB_PASSWORD }} | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
+
+    - name: Build & Push Docker Image
+      if: ${{ success() }}
+      uses: docker/build-push-action@v4
+      with:
+        context: ../..
+        file: ../BackendDockerfile
+        push: true
+        tags: ${{ secrets.DOCKERHUB_USERNAME }}/news_aggregator_fastapi_backend:${{ github.sha }}
