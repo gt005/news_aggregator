@@ -75,6 +75,6 @@ jobs:
       uses: docker/build-push-action@v4
       with:
         context: ../..
-        file: ../BackendDockerfile
+        file: ./BackendDockerfile
         push: true
         tags: ${{ secrets.DOCKERHUB_USERNAME }}/news_aggregator_fastapi_backend:${{ github.sha }}

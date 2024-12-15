@@ -75,6 +75,6 @@ jobs:
       uses: docker/build-push-action@v4
       with:
         context: ../..
-        file: ../BackendDataProcessorDockerfile
+        file: ./BackendDataProcessorDockerfile
         push: true
         tags: ${{ secrets.DOCKERHUB_USERNAME }}/news_aggregator_backend_data_processor:${{ github.sha }}

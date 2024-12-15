@@ -35,6 +35,6 @@ jobs:
       uses: docker/build-push-action@v4
       with:
         context: ../..
-        file: ../FrontendDockerfile
+        file: ./FrontendDockerfile
         push: true
         tags: ${{ secrets.DOCKERHUB_USERNAME }}/news_aggregator_frontend:${{ github.sha }}

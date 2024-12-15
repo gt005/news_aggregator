@@ -41,7 +41,7 @@ jobs:
       uses: docker/build-push-action@v4
       with:
         context: ../..
-        file: ../RbcParserDockerfile
+        file: ./RbcParserDockerfile
         push: true
         tags: ${{ secrets.DOCKERHUB_USERNAME }}/news_aggregator_website_parser:${{ github.sha }}
 
@@ -50,6 +50,6 @@ jobs:
       uses: docker/build-push-action@v4
       with:
         context: ../..
-        file: ../TelegramParserDockerfile
+        file: ./TelegramParserDockerfile
         push: true
         tags: ${{ secrets.DOCKERHUB_USERNAME }}/news_aggregator_telegram_parser:${{ github.sha }}
