@@ -15,7 +15,7 @@ export const sendParsedNewsToBackendServer = async (articles) => {
 
     try {
         await axios.post(
-            "http://backend_news_data_processor:8002/infra/v1/save-news/list",
+            "http://backend-news-data-processor.default.svc.cluster.local:8002/infra/v1/save-news/list",
             articles,
             {
                 headers: { Authorization: `Bearer ${token}` },

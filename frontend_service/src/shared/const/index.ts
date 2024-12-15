@@ -1,1 +1,1 @@
-export const serverUrl = 'http://localhost';
+export const serverUrl = 'http://backend.default.svc.cluster.local:8000';
