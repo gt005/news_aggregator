@@ -1,1 +1,1 @@
-export const serverUrl = 'http://api.news-fusion.ru';
+export const serverUrl = 'https://api.news-fusion.ru';
