@@ -1,1 +1,1 @@
-export const serverUrl = 'http://backend.default.svc.cluster.local:8000';
+export const serverUrl = 'http://api.news-fusion.ru';

@@ -16,7 +16,8 @@ app.add_middleware(
         "http://localhost:5173",
         "http://localhost",
         "http://89.223.121.232",
-        "news-fusion.ru"
+        "news-fusion.ru",
+        "api.news-fusion.ru",
     ],
     allow_credentials=True,
     allow_methods=["*"],
